@@ -63,11 +63,11 @@ rocks.db/
 *.xlog
 log.*
 tarantool
+!agent/tools/build-cache-node-9.0.jar
 !management-panel/src/main/web/src/component/build
 !kotlin-script-service/libraries/kotlin/*.jar
 !api/src/main/java/ru/art/platform/api/model/log/Log.java
-!api/src/main/java/ru/art/platform/api/mapping/log/LogMapper.java.java
-!management-panel/libraries/jmx_prometheus_javaagent-0.12.0.jar
-!management-panel/libraries/rsocket-transport-netty-1.0.0-RC6.jar
+!api/src/main/java/ru/art/platform/api/mapping/log/LogMapper.java
+!management-panel/libraries/rsocket-transport-netty-1.0.1.jar
 !docker-images/tarantool
 platform-security.key
