@@ -16,6 +16,7 @@ import ru.art.platform.constants.CommonConstants.USE_LEGACY_MERGE_SORT
 import ru.art.platform.service.BackupService.scheduleBackup
 import ru.art.platform.service.ManagementService.handleRestart
 import ru.art.platform.service.ManagementService.loadPlatformResources
+import ru.art.platform.service.MigrationService.migrateModules
 import ru.art.platform.service.SecuringService.initializeSecurity
 import ru.art.platform.specification.*
 import ru.art.reactive.service.module.ReactiveServiceModule
@@ -39,6 +40,7 @@ object ManagementPanelModule {
         asynchronous(::handleRestart)
         register(metricsModule().prometheusMeterRegistry.prometheusRegistry)
         scheduleBackup()
+        migrateModules()
         startServers()
     }
 
