@@ -13,15 +13,15 @@ import ru.art.platform.service.AutomationService.handleProjectsChanges
 
 object BitBucketService {
     fun onEvent(requestEntity: Entity?) {
-        requestEntity?.let { request ->
-            val projectKey = request.findString(REPOSITORY_PROJECT_KEY).toLowerCase()
-            val repositoryName = request.findString(REPOSITORY_NAME).toLowerCase()
-            val projects = getProjects().filter { project ->
-                val gitUrl = getGitResource(project.gitResourceId.id).url.toLowerCase()
-                gitUrl.contains(projectKey) && (gitUrl.endsWith(repositoryName) || gitUrl.endsWith("$repositoryName$DOT_GIT"))
-            }
-            request.findEntityList(CHANGES).forEach { changes -> handleProjectsChanges(projects, changes.findString(REF_ID).substringAfter(REFS_HEADS)) }
-        }
+//        requestEntity?.let { request ->
+//            val projectKey = request.findString(REPOSITORY_PROJECT_KEY).toLowerCase()
+//            val repositoryName = request.findString(REPOSITORY_NAME).toLowerCase()
+//            val projects = getProjects().filter { project ->
+//                val gitUrl = getGitResource(project.gitResourceId.id).url.toLowerCase()
+//                gitUrl.contains(projectKey) && (gitUrl.endsWith(repositoryName) || gitUrl.endsWith("$repositoryName$DOT_GIT"))
+//            }
+//            request.findEntityList(CHANGES).forEach { changes -> handleProjectsChanges(projects, changes.findString(REF_ID).substringAfter(REFS_HEADS)) }
+//        }
     }
 }
 

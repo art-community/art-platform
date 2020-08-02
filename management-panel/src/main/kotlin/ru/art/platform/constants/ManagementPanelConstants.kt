@@ -294,5 +294,7 @@ object MigrationStatus {
 }
 
 object Migrations {
+    const val USERS_MIGRATION = "USERS_MIGRATION"
     const val MODULES_MIGRATION = "MODULES_MIGRATION"
+    const val ASSEMBLY_CONFIGURATION_MIGRATION = "ASSEMBLY_CONFIGURATION_MIGRATION"
 }
