@@ -1,0 +1,30 @@
+package ru.art.platform.linux.constants
+
+object LinuxConstants {
+    const val STDIN = "<"
+    const val STDOUT = "1>"
+    const val STDERR = "2>"
+    const val SH = "sh"
+    const val ECHO = "echo"
+    const val NOHUP = "nohup"
+    const val DEV_NULL = "/dev/null"
+    const val SUDO = "sudo"
+    const val SUDO_SHELL_FLAG = "-S"
+    const val COMMAND_FLAG = "-c"
+    const val MKDIR_WITH_PARENTS = "mkdir -p"
+    const val COPY_RECURSIVE = "cp -r"
+    const val MOVE = "mv"
+    const val REMOVE_FORCE = "rm -rf"
+    const val JAVA_JAR = "java -jar"
+    const val CHOWN_RECURSIVE = "chown -R"
+    const val CHMOD_FILE = "chmod 677"
+    const val CHMOD_EXECUTABLE = "chmod 777"
+    const val CHMOD_DIRECTORY = "chmod 755"
+    const val KILL = "kill -9"
+    const val PID_OF = "pidof"
+    val SUDO_LOG = Regex("\\[sudo]\\spassword\\sfor.+?:")
+    const val NOHUP_OUT = "nohup.out"
+    const val NOHUP_ERR = "nohup.err"
+    const val STDOUT_LOG = ".stdout.log"
+    const val STDERR_LOG = ".stderr.log"
+}

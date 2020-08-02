@@ -1,0 +1,40 @@
+platform:
+  secret: "platform"
+  agent:
+    image: "platforma/agent:development"
+    timeoutMinutes: 5
+  openShift:
+    platformProjectName: "platform"
+  enableServiceLogging: true
+  user:
+    administrator:
+      name: administrator
+      password: password
+    defaultActions:
+      - CONFIGURATIONS_MANAGEMENT
+      - PROJECTS_MANAGEMENT
+      - ASSEMBLIES_MANAGEMENT
+      - MODULES_MANAGEMENT
+      - NETWORK_ACCESSES_CHECKING
+http:
+  server:
+    port: 10000
+    path: /platform
+rsocket:
+  server:
+    webSocketPort: 10001
+tarantool:
+  instances:
+    platform:
+      connection:
+        host: localhost
+        port: 3301
+        username: tarantool
+        password: tarantool
+      instanceMode: local
+      initial:
+        slabAllocArena: 8
+        slabAllocMaximal: 268435456
+logging:
+  colored: true
+  asynchronous: true
