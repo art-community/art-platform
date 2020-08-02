@@ -11,6 +11,7 @@ import ru.art.platform.api.model.module.ModuleUrl
 import ru.art.platform.api.model.user.User
 import ru.art.platform.common.constants.PlatformKeywords.*
 import ru.art.platform.constants.MigrationStatus.PROCESSED
+import ru.art.platform.constants.Migrations.APPLICATIONS_MIGRATION
 import ru.art.platform.constants.Migrations.ASSEMBLY_CONFIGURATION_MIGRATION
 import ru.art.platform.constants.Migrations.MODULES_MIGRATION
 import ru.art.platform.constants.Migrations.USERS_MIGRATION
@@ -18,6 +19,7 @@ import ru.art.platform.constants.UserActions.DEFAULT_USER_RIGHTS
 import ru.art.platform.constants.UserActions.GLOBAL_ADMINISTRATOR_ACTIONS
 import ru.art.platform.repository.AssemblyConfigurationRepository
 import ru.art.platform.repository.AssemblyConfigurationRepository.saveAssemblyConfiguration
+import ru.art.platform.repository.FilebeatApplicationRepository
 import ru.art.platform.repository.MigrationRepository.getMigrationStatus
 import ru.art.platform.repository.MigrationRepository.putMigrationStatus
 import ru.art.platform.repository.ModuleRepository.putModule
@@ -30,15 +32,29 @@ import ru.art.tarantool.dao.TarantoolDao.tarantool
 object MigrationService {
     fun migrate() {
         if (!getMigrationStatus(USERS_MIGRATION).filter { status -> status == PROCESSED }.isPresent) {
-            UserRepository.getUsers()
+            tarantool(PLATFORM_CAMEL_CASE)
+                    .selectAll(USER_CAMEL_CASE)
                     .forEach { user ->
-                        user.toBuilder()
-                                .availableActions(if (user.admin) GLOBAL_ADMINISTRATOR_ACTIONS else DEFAULT_USER_RIGHTS)
-                                .availableProjects(getProjects().map { project -> project.id })
+                        val id = user.getLong("id")
+                        val name = user.getString("name")
+                        val token = user.getString("token")
+                        val fullName = user.getString("fullName")
+                        val password = user.getString("password")
+                        val email = user.getString("email")
+                        val user = User.builder()
+                                .id(id)
+                                .name(name)
+                                .admin(user.getBool("admin"))
+                                .email(email)
+                                .password(password.toByteArray())
+                                .token(token)
+                                .fullName(fullName)
+                                .availableActions(if (user.getBool("admin") == true) GLOBAL_ADMINISTRATOR_ACTIONS else DEFAULT_USER_RIGHTS)
+                                .availableProjects(ProjectRepository.getProjects().map { project -> project.id })
                                 .build()
                         putUser(user)
                     }
-            putMigrationStatus(USERS_MIGRATION, PROCESSED)
+                putMigrationStatus(USERS_MIGRATION, PROCESSED)
         }
         if (!getMigrationStatus(MODULES_MIGRATION).filter { status -> status == PROCESSED }.isPresent) {
             tarantool(PLATFORM_CAMEL_CASE)
@@ -94,6 +110,10 @@ object MigrationService {
         if (!getMigrationStatus(ASSEMBLY_CONFIGURATION_MIGRATION).filter { status -> status == PROCESSED }.isPresent) {
             getProjects().forEach { project ->  saveAssemblyConfiguration(AssemblyConfiguration.builder().id(project.id).build()) }
             putMigrationStatus(ASSEMBLY_CONFIGURATION_MIGRATION, PROCESSED)
+        }
+        if (!getMigrationStatus(APPLICATIONS_MIGRATION).filter { status -> status == PROCESSED }.isPresent) {
+            FilebeatApplicationRepository.getFilebeatApplications().forEach { FilebeatApplicationRepository.deleteFilebeatApplication(it.id) }
+            putMigrationStatus(APPLICATIONS_MIGRATION, PROCESSED)
         }
     }
 }
