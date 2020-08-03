@@ -27,6 +27,8 @@ public interface ModuleConfigurationMapper {
 
 	String count = "count";
 
+	String probesConfiguration = "probesConfiguration";
+
 	String ports = "ports";
 
 	String preparedConfigurations = "preparedConfigurations";
@@ -44,6 +46,7 @@ public interface ModuleConfigurationMapper {
 			.url(entity.getValue(url, ModuleUrlMapper.toModuleUrl))
 			.parameters(entity.getString(parameters))
 			.count(entity.getInt(count))
+			.probesConfiguration(entity.getValue(probesConfiguration, ProbesConfigurationMapper.toProbesConfiguration))
 			.ports(entity.getIntList(ports))
 			.preparedConfigurations(entity.getEntitySet(preparedConfigurations, PreparedConfigurationIdentifierMapper.toPreparedConfigurationIdentifier))
 			.manualConfigurations(entity.getEntitySet(manualConfigurations, StringFileMapper.toStringFile))
@@ -58,6 +61,7 @@ public interface ModuleConfigurationMapper {
 			.entityField(url, model.getUrl(), ModuleUrlMapper.fromModuleUrl)
 			.stringField(parameters, model.getParameters())
 			.intField(count, model.getCount())
+			.entityField(probesConfiguration, model.getProbesConfiguration(), ProbesConfigurationMapper.fromProbesConfiguration)
 			.intCollectionField(ports, model.getPorts())
 			.entityCollectionField(preparedConfigurations, model.getPreparedConfigurations(), PreparedConfigurationIdentifierMapper.fromPreparedConfigurationIdentifier)
 			.entityCollectionField(manualConfigurations, model.getManualConfigurations(), StringFileMapper.fromStringFile)

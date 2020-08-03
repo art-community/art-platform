@@ -15,6 +15,12 @@ export type ModuleUrl = {
     port?: number
 }
 
+export type ProbeConfiguration = {
+    path?: string
+    livenessProbe?: boolean
+    readinessProbe?: boolean
+}
+
 export type ModuleConfigurationDraft = {
     resourceId: ResourceIdentifier
     artifact: AssembledArtifact
@@ -31,6 +37,8 @@ export type ModuleConfigurationDraft = {
     hasUrl?: boolean
     hasPorts?: boolean
     hasStringConfigurations?: boolean
+    hasProbe?: boolean
+    probesConfiguration?: ProbeConfiguration
 }
 
 export type ModuleConfiguration = {
@@ -45,6 +53,7 @@ export type ModuleConfiguration = {
     manualConfigurations?: StringFile[]
     additionalFiles?: PlatformFileIdentifier[]
     applications?: ModuleApplication[]
+    probesConfiguration?: ProbeConfiguration
 }
 
 export type ModuleInformation = {
@@ -69,6 +78,7 @@ export type ModuleInformation = {
 
 export type Module = ModuleInformation & {
     applications?: ModuleApplication[]
+    probesConfiguration?: ProbeConfiguration
 }
 
 export type  ModuleApplication = {

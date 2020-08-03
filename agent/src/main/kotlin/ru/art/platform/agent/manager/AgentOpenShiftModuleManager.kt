@@ -1,6 +1,5 @@
 package ru.art.platform.agent.manager
 
-import ru.art.core.context.Context.contextConfiguration
 import ru.art.platform.agent.constants.ModuleImageConstants.MODULE_PATH
 import ru.art.platform.agent.dsl.AgentDsl.installModule
 import ru.art.platform.agent.dsl.AgentDsl.updateModule
@@ -22,6 +21,7 @@ object AgentOpenShiftModuleManager {
             workingDirectory("$MODULE_PATH/${request.projectId.id}/${current().artifact.name}")
             replicationsCount(current().count)
             applications(request.applications)
+            probes(request.probesConfiguration)
             current().url?.takeIf { url -> !url.url.isNullOrBlank() }?.let { url ->
                 port(url.port)
                 publish(url.url, url.port)
@@ -70,6 +70,7 @@ object AgentOpenShiftModuleManager {
             workingDirectory("$MODULE_PATH/${request.projectId.id}/${current().artifact.name}")
             replicationsCount(current().count)
             applications(request.applications)
+            probes(request.probesConfiguration)
             current().url?.takeIf { url -> !url.url.isNullOrBlank() }?.let { url ->
                 val mappingBuilder = PortMapping.builder().internalPort(url.port)
                 current().portMappings

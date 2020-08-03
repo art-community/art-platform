@@ -30,6 +30,7 @@ object OpenShiftConstants {
     const val CLUSTER_IP = "clusterIP"
     const val INIT_CONTAINERS = "initContainers"
     const val PORT = "port"
+    const val PATH = "path"
     const val VOLUMES = "volumes"
     const val NAME = "name"
     const val EMPTY_DIR = "emptyDir"
@@ -52,6 +53,17 @@ object OpenShiftConstants {
     const val IMAGE_PULL_POLICY_IF_NOT_PRESENT = "IfNotPresent"
     const val IMAGE_PULL_POLICY_NEVER = "Never"
     const val DEPLOY_POD_POSTFIX = "-deploy"
+    const val READINESS_PROBE = "readinessProbe"
+    const val LIVENESS_PROBE = "livenessProbe"
+    const val HTTP_GET = "httpGet"
+    const val SCHEME = "scheme"
+    const val HTTP = "HTTP"
+    const val CONTAINERS = "containers"
+    const val INITIAL_DELAY_SECONDS = "initialDelaySeconds";
+    const val TIMEOUT_SECONDS = "timeoutSeconds";
+    const val PERIOD_SECONDS = "periodSeconds";
+    const val SUCCESS_THRESHOLD = "successThreshold";
+    const val FAILURE_THRESHOLD = "failureThreshold";
 }
 
 enum class OpenShiftContainerStatus(val status: String) {

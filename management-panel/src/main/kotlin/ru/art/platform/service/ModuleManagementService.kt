@@ -43,6 +43,7 @@ object ModuleManagementService {
                                     .applications(configureModuleApplications(applications))
                                     .user(user)
                                     .notificationsConfiguration(project.notificationsConfiguration)
+                                    .probesConfiguration(probesConfiguration)
                                     .build())
                             .doOnError { error -> handleModuleError(MODULE_INSTALLING_STATE, error) }
                             .doOnComplete { completeModule(MODULE_INSTALLING_STATE, MODULE_RUN_STATE) }
@@ -76,6 +77,7 @@ object ModuleManagementService {
                                     .applications(configureModuleApplications(applications))
                                     .user(user)
                                     .notificationsConfiguration(project.notificationsConfiguration)
+                                    .probesConfiguration(probesConfiguration)
                                     .build()))
                             .doOnError { error -> handleModuleError(MODULE_UPDATING_STATE, error) }
                             .doOnComplete { completeModule(MODULE_UPDATING_STATE, MODULE_RUN_STATE) }

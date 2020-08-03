@@ -25,6 +25,7 @@ public class Module {
     private final ModuleUrl url;
     private final String parameters;
     private final int count;
+    private final ProbesConfiguration probesConfiguration;
 
     @Builder.Default
     private final String state = MODULE_INSTALLATION_STARTED_STATE;

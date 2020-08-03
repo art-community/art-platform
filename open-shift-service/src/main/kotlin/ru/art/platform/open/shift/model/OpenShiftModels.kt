@@ -1,7 +1,6 @@
 package ru.art.platform.open.shift.model
 
 import com.openshift.restclient.images.DockerImageURI
-import ru.art.core.constants.StringConstants.EMPTY_STRING
 import ru.art.platform.open.shift.constants.OpenShiftConstants.IMAGE_PULL_POLICY_ALWAYS
 import ru.art.platform.open.shift.constants.OpenShiftConstants.POD_CHECKING_TIMEOUT
 import ru.art.platform.open.shift.constants.OpenShiftConstants.POD_CHECK_WAITING_MILLIS
@@ -14,6 +13,11 @@ data class OpenShiftPodPort(val name: String,
                             var port: Int = 0,
                             var protocol: String = TCP)
 
+data class OpenShiftProbes(val probePath: String? = null,
+                           var livenessProbe: Boolean = false,
+                           var readinessProbe: Boolean = false)
+
+
 data class OpenShiftPortMapping(val name: String,
                                 var servicePort: Int = 0,
                                 var podPort: Int = 0,
@@ -25,7 +29,8 @@ data class OpenShiftPodConfiguration(val name: String,
                                      var nodeSelector: MutableMap<String, String> = mutableMapOf(),
                                      var volumes: MutableMap<String, OpenShiftVolumeConfiguration> = mutableMapOf(),
                                      var node: String? = null,
-                                     var labels: MutableMap<String, String> = mutableMapOf())
+                                     var labels: MutableMap<String, String> = mutableMapOf(),
+                                     var probes: OpenShiftProbes = OpenShiftProbes())
 
 data class OpenShiftContainerConfiguration(val name: String,
                                            var image: DockerImageURI,
@@ -90,5 +95,5 @@ data class OpenShiftPodWaitingConfiguration(val name: String,
                                             val afterCheckWaitingMillis: Long = POD_CHECK_WAITING_MILLIS)
 
 data class OpenShiftDeletedPodWaitingConfiguration(val name: String,
-                                            val timeoutMillis: Long = POD_CHECKING_TIMEOUT,
-                                            val pollingDelayMillis: Long = POD_POLLING_DELAY_MILLIS)
+                                                   val timeoutMillis: Long = POD_CHECKING_TIMEOUT,
+                                                   val pollingDelayMillis: Long = POD_POLLING_DELAY_MILLIS)

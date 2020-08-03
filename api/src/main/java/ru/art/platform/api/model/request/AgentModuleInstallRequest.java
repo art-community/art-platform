@@ -34,4 +34,6 @@ public class AgentModuleInstallRequest {
     private final List<StringFile> configurationFiles;
 
     private ModuleApplications applications;
+
+    private ProbesConfiguration probesConfiguration;
 }

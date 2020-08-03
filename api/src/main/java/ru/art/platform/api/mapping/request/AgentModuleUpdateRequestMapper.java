@@ -37,6 +37,8 @@ public interface AgentModuleUpdateRequestMapper {
 
 	String notificationsConfiguration = "notificationsConfiguration";
 
+	String probesConfiguration = "probesConfiguration";
+
 	ValueToModelMapper<AgentModuleUpdateRequest, Entity> toAgentModuleUpdateRequest = entity -> isNotEmpty(entity) ? AgentModuleUpdateRequest.builder()
 			.projectId(entity.getValue(projectId, ExternalIdentifierMapper.toExternalIdentifier))
 			.newModule(entity.getValue(newModule, ModuleMapper.toModule))
@@ -48,6 +50,7 @@ public interface AgentModuleUpdateRequestMapper {
 			.applications(entity.getValue(applications, ModuleApplicationsMapper.toModuleApplications))
 			.notificationsConfiguration(entity.getValue(notificationsConfiguration, ProjectNotificationsConfigurationMapper.toProjectNotificationsConfiguration))
 			.user(entity.getValue(user, UserMapper.toUser))
+			.probesConfiguration(entity.getValue(probesConfiguration, ProbesConfigurationMapper.toProbesConfiguration))
 			.build() : null;
 
 	ValueFromModelMapper<AgentModuleUpdateRequest, Entity> fromAgentModuleUpdateRequest = model -> isNotEmpty(model) ? Entity.entityBuilder()
@@ -61,5 +64,6 @@ public interface AgentModuleUpdateRequestMapper {
 			.entityField(applications, model.getApplications(), ModuleApplicationsMapper.fromModuleApplications)
 			.entityField(notificationsConfiguration, model.getNotificationsConfiguration(), ProjectNotificationsConfigurationMapper.fromProjectNotificationsConfiguration)
 			.entityField(user, model.getUser(), UserMapper.fromUser)
+			.entityField(probesConfiguration, model.getProbesConfiguration(), ProbesConfigurationMapper.fromProbesConfiguration)
 			.build() : null;
 }

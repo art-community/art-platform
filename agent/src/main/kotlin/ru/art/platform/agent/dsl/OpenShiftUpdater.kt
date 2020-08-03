@@ -10,6 +10,7 @@ import ru.art.platform.agent.openShift.compareOpenShiftApplications
 import ru.art.platform.agent.openShift.configureOpenShiftApplications
 import ru.art.platform.api.model.external.PortMapping
 import ru.art.platform.api.model.module.ModuleApplications
+import ru.art.platform.api.model.module.ProbesConfiguration
 import ru.art.platform.api.model.resource.OpenShiftResource
 import ru.art.platform.common.constants.Applications.APPLICATION_TYPES
 import ru.art.platform.common.constants.ErrorCodes.UPDATING_FAILED
@@ -21,6 +22,7 @@ import ru.art.platform.common.extractor.extractPath
 import ru.art.platform.open.shift.configurator.OpenShiftDeploymentConfigurator
 import ru.art.platform.open.shift.constants.OpenShiftConstants.TCP
 import ru.art.platform.open.shift.model.OpenShiftDeploymentPodWaitingConfiguration
+import ru.art.platform.open.shift.model.OpenShiftProbes
 import ru.art.platform.open.shift.service.*
 import java.util.Objects.isNull
 import java.util.Objects.nonNull
@@ -39,6 +41,7 @@ class OpenShiftUpdater(private val resource: OpenShiftResource, private var name
     private var environmentVariables = mutableMapOf<String, String>()
     private var skipChangesCheck = false
     private var applications: ModuleApplications? = null
+    private var probes: OpenShiftProbes = OpenShiftProbes()
 
     fun skipChangesCheck(skip: Boolean = true): OpenShiftUpdater {
         skipChangesCheck = skip
@@ -146,6 +149,17 @@ class OpenShiftUpdater(private val resource: OpenShiftResource, private var name
         return this
     }
 
+    fun probes(probeConfiguration: ProbesConfiguration?): OpenShiftUpdater {
+        if (isNull(probeConfiguration)) return this
+
+        this.probes = OpenShiftProbes(
+                probePath = probeConfiguration?.path,
+                livenessProbe = probeConfiguration!!.isLivenessProbe,
+                readinessProbe = probeConfiguration.isReadinessProbe
+        )
+        return this
+    }
+
     fun update(then: OpenShiftUpdateResult.() -> Unit) {
         openShift(resource) {
             getProject(projectName) {
@@ -233,6 +247,8 @@ class OpenShiftUpdater(private val resource: OpenShiftResource, private var name
             applications?.let { applications ->
                 environmentVariables.putAll(configureOpenShiftApplications(workingDirectory).addApplications(applications))
             }
+
+            probe(probes)
 
             container(name, DockerImageURI(image)) {
                 alwaysPullImage()
