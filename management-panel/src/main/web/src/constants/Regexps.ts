@@ -59,4 +59,4 @@ export const HOST_NAME_AND_IP_REGEX = new RegExp('^(?:(?:25[0-5]|2[0-4][0-9]|[01
 export const POSITIVE_NUMBER_REGEX = new RegExp('^[1-9]+[0-9]*$');
 
 // language=RegExp
-export const PATH_REGEX = new RegExp('\\/*');
+export const PATH_REGEX = new RegExp('(\\/).*');
