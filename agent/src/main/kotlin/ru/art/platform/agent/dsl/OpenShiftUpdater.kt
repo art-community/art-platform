@@ -270,14 +270,15 @@ class OpenShiftUpdater(private val resource: OpenShiftResource, private var name
                 return@pod this
             }
 
-            serve(name) {
-                internalIp?.let(::ip)
-                asNodePort(ports
-                        .filter { port -> nonNull(port.externalPort) }
-                        .map { port -> "${TCP.toLowerCase()}-${port.internalPort}" to port.externalPort }
-                        .toMap())
-            }
+//            serve(name) {
+//                internalIp?.let(::ip)
+//                asNodePort(ports
+//                        .filter { port -> nonNull(port.externalPort) }
+//                        .map { port -> "${TCP.toLowerCase()}-${port.internalPort}" to port.externalPort }
+//                        .toMap())
+//            }
 
+            updateService()
             updateRoute()
             return@pod this
         }
