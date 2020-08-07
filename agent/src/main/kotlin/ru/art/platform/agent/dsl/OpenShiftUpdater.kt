@@ -270,14 +270,6 @@ class OpenShiftUpdater(private val resource: OpenShiftResource, private var name
                 return@pod this
             }
 
-//            serve(name) {
-//                internalIp?.let(::ip)
-//                asNodePort(ports
-//                        .filter { port -> nonNull(port.externalPort) }
-//                        .map { port -> "${TCP.toLowerCase()}-${port.internalPort}" to port.externalPort }
-//                        .toMap())
-//            }
-
             updateService()
             updateRoute()
             return@pod this
@@ -325,7 +317,7 @@ class OpenShiftUpdater(private val resource: OpenShiftResource, private var name
 
         val serviceEquals = getService(name)?.let { service ->
             service.clusterIP == clusterIp &&
-                    ports == service.ports.map { port -> port.port to port.nodePort.toInt() }.toMap()
+                    ports.map { port -> port.internalPort to port.externalPort.toInt() }.toMap() == service.ports.map { port -> port.port to port.nodePort.toInt() }.toMap()
         } ?: false
 
         if (serviceEquals) {
