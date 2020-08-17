@@ -47,7 +47,7 @@ class ArtifactsUploader(private var uploadingArtifacts: MutableList<UploadingArt
         }
         emitter?.emit("Starting upload artifacts")
         val uploadedArtifacts = CopyOnWriteArrayList<AssembledArtifact>()
-        uploadingArtifacts.forEach { artifact -> uploadArtifact(artifact, uploadedArtifacts) }
+        uploadingArtifacts.parallelStream().forEach { artifact -> uploadArtifact(artifact, uploadedArtifacts) }
         emitter?.emit(success("Uploading artifacts finished"))
         then(ArtifactsUploadResult(uploadedArtifacts))
         return this
