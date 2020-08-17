@@ -41,7 +41,7 @@ object ManagementPanelModule {
         asynchronous(::handleRestart)
         register(metricsModule().prometheusMeterRegistry.prometheusRegistry)
         scheduleBackup()
-        if (configBoolean("platform", "migration.disabled", false)) {
+        if (!configBoolean("platform", "migration.disabled", false)) {
             migrate()
         }
         startServers()
