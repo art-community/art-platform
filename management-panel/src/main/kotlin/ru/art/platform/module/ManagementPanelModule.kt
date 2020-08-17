@@ -1,6 +1,7 @@
 package ru.art.platform.module
 
 import io.prometheus.client.hotspot.DefaultExports.register
+import ru.art.config.extensions.ConfigExtensions.configBoolean
 import ru.art.config.extensions.activator.AgileConfigurationsActivator.useAgileConfigurations
 import ru.art.core.configurator.ModuleConfigurator
 import ru.art.http.server.HttpServer.startHttpServer
@@ -40,7 +41,9 @@ object ManagementPanelModule {
         asynchronous(::handleRestart)
         register(metricsModule().prometheusMeterRegistry.prometheusRegistry)
         scheduleBackup()
-        migrate()
+        if (configBoolean("migration", "disabled", false)) {
+            migrate()
+        }
         startServers()
     }
 
