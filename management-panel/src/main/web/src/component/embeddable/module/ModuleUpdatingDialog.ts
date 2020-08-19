@@ -99,7 +99,7 @@ export class ModuleUpdatingDialog extends Widget<ModuleUpdatingDialog, Propertie
         super(properties, Configuration);
         const request = {projectId: this.properties.baseModule.projectId};
         this.onLoad(() => this.#projectApi().getAssembledProjectArtifacts(request, artifacts => {
-            this.configuration.artifacts.set(artifacts.filter(artifact => artifact.name == this.properties.baseModule.artifact.name))
+            this.configuration.artifacts.set(artifacts)
             this.#artifactSelector.notify();
         }))
     }
