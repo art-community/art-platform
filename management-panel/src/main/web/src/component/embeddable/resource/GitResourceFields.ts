@@ -5,7 +5,7 @@ const url = () => text({
     label: "URL репозитория",
     fullWidth: true,
     required: true,
-    placeholder: "https://github.com/art-community/ART.git",
+    placeholder: "https://github.com/art-community/art-java.git",
     regexp: GIT_URL_REGEX,
     defaultErrorText: "URL должен соответствовать правилам наименования Git URL"
 })

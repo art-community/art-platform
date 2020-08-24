@@ -6,7 +6,7 @@ import {DispatchWithoutAction} from "react";
 import {ProbeConfiguration} from "../../../../model/ModuleTypes";
 import {checkbox} from "../../../../framework/dsl/managed/ManagedCheckbox";
 import {verticalGrid} from "../../../../framework/dsl/managed/ManagedGrid";
-import {PATH_REGEX, PORT_REGEX} from "../../../../constants/Regexps";
+import {PATH_REGEX} from "../../../../constants/Regexps";
 
 type Properties = {
     probeConfiguration?: ProbeConfiguration
@@ -22,20 +22,21 @@ export class ProbeConfigurator extends Widget<ProbeConfigurator, Properties> imp
         fullWidth: true
     });
 
-    #livenessProbe = checkbox({
-        label: "Проверка доступности модуля"
-    }).setChecked(this.properties?.probeConfiguration?.livenessProbe || false);
+    #livenessProbe = checkbox({label: "Проверка доступности модуля"})
+    .setChecked(this.properties?.probeConfiguration?.livenessProbe || false);
 
-    #readinessProbe = checkbox({
-        label: "Проверка готовности модуля"
-    }).setChecked(this.properties?.probeConfiguration?.readinessProbe || false);
+    #readinessProbe = checkbox({label: "Проверка готовности модуля"})
+    .setChecked(this.properties?.probeConfiguration?.readinessProbe || false);
 
     #configurator = checkBoxPanel(verticalGrid({spacing: 1, wrap: "nowrap"})
-            .pushWidget(this.#path)
-            .pushWidget(this.#livenessProbe)
-            .pushWidget(this.#readinessProbe),
-        {label: "Проверки доступности", checked: Boolean(this.properties.probeConfiguration?.path)})
-        .onCheck(checked => !checked && this.#path.clear() && this.#livenessProbe.uncheck() && this.#readinessProbe.uncheck());
+        .pushWidget(this.#path)
+        .pushWidget(this.#livenessProbe)
+        .pushWidget(this.#readinessProbe),
+        {
+            label: "Проверки доступности",
+            checked: Boolean(this.properties.probeConfiguration?.path)
+        })
+    .onCheck(checked => !checked && this.#path.clear() && this.#livenessProbe.uncheck() && this.#readinessProbe.uncheck());
 
     onChange = (action: DispatchWithoutAction) => {
         this.#configurator.onCheck(action)
