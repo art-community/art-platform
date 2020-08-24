@@ -317,7 +317,15 @@ class OpenShiftUpdater(private val resource: OpenShiftResource, private var name
 
         val serviceEquals = getService(name)?.let { service ->
             service.clusterIP == clusterIp &&
-                    ports.map { port -> port.internalPort to port.externalPort.toInt() }.toMap() == service.ports.map { port -> port.port to port.nodePort.toInt() }.toMap()
+                    ports.all { port ->
+                        service.ports.any { servicePort ->
+                            port.internalPort == servicePort.port && port.externalPort?.let { external ->
+                                servicePort.nodePort?.let { nodePort ->
+                                    nodePort.toInt() == external
+                                } ?: false
+                            } ?: servicePort.nodePort == null
+                        }
+                    }
         } ?: false
 
         if (serviceEquals) {
