@@ -18,6 +18,7 @@ public class ModuleConfiguration {
     private final ModuleUrl url;
     private final String parameters;
     private final int count;
+    private final ProbesConfiguration probesConfiguration;
 
     @Singular("port")
     private final List<Integer> ports;

@@ -1,5 +1,5 @@
 import {moduleAdditionalFilesConfigurator} from "./ModuleAdditionalFilesConfigurator";
-import {Module, ModuleConfigurationDraft, ModuleInformation} from "../../../../model/ModuleTypes";
+import {Module, ModuleConfigurationDraft, ModuleInformation, ProbeConfiguration} from "../../../../model/ModuleTypes";
 import {Widget} from "../../../../framework/widgets/Widget";
 import {ResourcesStore} from "../../../../loader/ResourcesLoader";
 import {moduleNameConfigurator} from "./ModuleNameConfigurator";
@@ -18,6 +18,7 @@ import {DispatchWithoutAction} from "react";
 import {moduleApplicationsCollection} from "../application/ModuleApplicationsCollection";
 import {ApplicationsStore} from "../../../../loader/ApplicationsLoader";
 import {PreparedConfigurationIdentifier} from "../../../../model/PreparedConfigurationTypes";
+import {probeConfigurator} from "./ProbeConfigurator";
 
 type Properties = {
     disableNameEditing?: boolean
@@ -28,6 +29,7 @@ type Properties = {
     preparedConfigurations: PreparedConfigurationIdentifier[]
     modules: ModuleInformation[]
     projectId: number
+    probeConfiguration?: ProbeConfiguration
 }
 
 class Configuration extends Configurable<Properties> {
@@ -55,6 +57,10 @@ export class ModuleConfigurator extends Widget<ModuleConfigurator, Properties, C
         url: this.properties.baseModule?.url
     })
 
+    #probe = probeConfigurator({
+        probeConfiguration: this.properties.probeConfiguration
+    })
+
     #ports = modulePortsConfigurator({ports: this.properties.baseModule?.ports});
 
     #configurationFiles = moduleConfigurationFilesConfigurator({
@@ -75,15 +81,16 @@ export class ModuleConfigurator extends Widget<ModuleConfigurator, Properties, C
     })
 
     #configurator = verticalGrid({spacing: 2})
-    .pushWidget(this.#name)
-    .pushWidget(this.#resource)
-    .pushWidget(this.#count)
-    .pushWidget(this.#parameters)
-    .pushWidget(this.#ports)
-    .pushWidget(this.#url)
-    .pushWidget(this.#configurationFiles)
-    .pushWidget(this.#additionalFiles)
-    .pushWidget(this.#applications)
+        .pushWidget(this.#name)
+        .pushWidget(this.#resource)
+        .pushWidget(this.#count)
+        .pushWidget(this.#parameters)
+        .pushWidget(this.#ports)
+        .pushWidget(this.#url)
+        .pushWidget(this.#probe)
+        .pushWidget(this.#configurationFiles)
+        .pushWidget(this.#additionalFiles)
+        .pushWidget(this.#applications)
 
     configure = (): ModuleConfigurationDraft => ({
         name: this.#name.get()?.configure()
@@ -102,7 +109,9 @@ export class ModuleConfigurator extends Widget<ModuleConfigurator, Properties, C
         hasUrl: this.#url.checked(),
         hasParameters: this.#parameters.checked(),
         hasPorts: this.#ports.checked(),
-        hasStringConfigurations: this.#configurationFiles.checked()
+        hasStringConfigurations: this.#configurationFiles.checked(),
+        hasProbe: this.#probe.checked(),
+        probesConfiguration: this.#probe.configure()
     })
 
     onChange = (action: DispatchWithoutAction) => {
@@ -115,6 +124,7 @@ export class ModuleConfigurator extends Widget<ModuleConfigurator, Properties, C
         this.#additionalFiles.onChange(action)
         this.#configurationFiles.onChange(action)
         this.#applications.onChange(action)
+        this.#probe.onChange(action)
         return this;
     }
 

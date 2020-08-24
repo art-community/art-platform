@@ -37,6 +37,8 @@ public interface ModuleMapper {
 
 	String count = "count";
 
+	String probesConfiguration = "probesConfiguration";
+
 	String state = "state";
 
 	String updateTimeStamp = "updateTimeStamp";
@@ -64,6 +66,7 @@ public interface ModuleMapper {
 			.url(entity.getValue(url, ModuleUrlMapper.toModuleUrl))
 			.parameters(entity.getString(parameters))
 			.count(entity.getInt(count))
+			.probesConfiguration(entity.getValue(probesConfiguration, ProbesConfigurationMapper.toProbesConfiguration))
 			.state(entity.getString(state))
 			.updateTimeStamp(entity.getLong(updateTimeStamp))
 			.ports(entity.getIntList(ports))
@@ -85,6 +88,7 @@ public interface ModuleMapper {
 			.entityField(url, model.getUrl(), ModuleUrlMapper.fromModuleUrl)
 			.stringField(parameters, model.getParameters())
 			.intField(count, model.getCount())
+			.entityField(probesConfiguration, model.getProbesConfiguration(), ProbesConfigurationMapper.fromProbesConfiguration)
 			.stringField(state, model.getState())
 			.longField(updateTimeStamp, model.getUpdateTimeStamp())
 			.intCollectionField(ports, model.getPorts())

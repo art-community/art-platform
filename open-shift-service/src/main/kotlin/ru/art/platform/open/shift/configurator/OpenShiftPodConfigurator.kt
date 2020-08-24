@@ -35,6 +35,11 @@ class OpenShiftPodConfigurator(private val projectService: OpenShiftProjectServi
         return this
     }
 
+    fun probe(probes: OpenShiftProbes): OpenShiftPodConfigurator {
+        configuration.probes = probes
+        return this
+    }
+
     fun nodeSelector(name: String, value: String): OpenShiftPodConfigurator {
         configuration.nodeSelector[name] = value
         return this

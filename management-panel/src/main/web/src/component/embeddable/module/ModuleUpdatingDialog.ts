@@ -58,7 +58,8 @@ export class ModuleUpdatingDialog extends Widget<ModuleUpdatingDialog, Propertie
         baseModule: this.properties.baseModule,
         resources: this.properties.resources,
         preparedConfigurations: this.properties.preparedConfigurations,
-        projectId: this.properties.baseModule.projectId
+        projectId: this.properties.baseModule.projectId,
+        probeConfiguration: this.properties.baseModule.probesConfiguration
     })
     .onChange(() => this.#validate())
 

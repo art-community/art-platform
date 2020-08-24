@@ -3,6 +3,7 @@ package ru.art.platform.open.shift.service
 import com.openshift.internal.restclient.model.Container
 import com.openshift.internal.restclient.model.Pod
 import com.openshift.internal.restclient.model.Port
+
 import com.openshift.internal.restclient.model.volume.VolumeMount
 import com.openshift.restclient.ResourceKind.POD
 import com.openshift.restclient.model.IPod
@@ -12,15 +13,28 @@ import org.jboss.dmr.ModelNode.fromJSONString
 import ru.art.logging.LoggingModule.loggingModule
 import ru.art.platform.open.shift.configurator.OpenShiftPodConfigurator
 import ru.art.platform.open.shift.constants.OpenShiftConstants.CONFIG_MAP
+import ru.art.platform.open.shift.constants.OpenShiftConstants.CONTAINERS
 import ru.art.platform.open.shift.constants.OpenShiftConstants.EMPTY_DIR
+import ru.art.platform.open.shift.constants.OpenShiftConstants.FAILURE_THRESHOLD
+import ru.art.platform.open.shift.constants.OpenShiftConstants.HTTP
+import ru.art.platform.open.shift.constants.OpenShiftConstants.HTTP_GET
 import ru.art.platform.open.shift.constants.OpenShiftConstants.IMAGE_PULL_POLICY_ALWAYS
+import ru.art.platform.open.shift.constants.OpenShiftConstants.INITIAL_DELAY_SECONDS
 import ru.art.platform.open.shift.constants.OpenShiftConstants.INIT_CONTAINERS
+import ru.art.platform.open.shift.constants.OpenShiftConstants.LIVENESS_PROBE
 import ru.art.platform.open.shift.constants.OpenShiftConstants.NAME
 import ru.art.platform.open.shift.constants.OpenShiftConstants.NODE_NAME
 import ru.art.platform.open.shift.constants.OpenShiftConstants.NODE_SELECTOR
+import ru.art.platform.open.shift.constants.OpenShiftConstants.PATH
+import ru.art.platform.open.shift.constants.OpenShiftConstants.PERIOD_SECONDS
+import ru.art.platform.open.shift.constants.OpenShiftConstants.PORT
+import ru.art.platform.open.shift.constants.OpenShiftConstants.READINESS_PROBE
+import ru.art.platform.open.shift.constants.OpenShiftConstants.SCHEME
 import ru.art.platform.open.shift.constants.OpenShiftConstants.SECRET
 import ru.art.platform.open.shift.constants.OpenShiftConstants.SECRET_NAME
 import ru.art.platform.open.shift.constants.OpenShiftConstants.SPEC
+import ru.art.platform.open.shift.constants.OpenShiftConstants.SUCCESS_THRESHOLD
+import ru.art.platform.open.shift.constants.OpenShiftConstants.TIMEOUT_SECONDS
 import ru.art.platform.open.shift.constants.OpenShiftConstants.VERSION_V_1
 import ru.art.platform.open.shift.constants.OpenShiftConstants.VOLUMES
 import ru.art.platform.open.shift.constants.containerStatus
@@ -129,6 +143,39 @@ fun OpenShiftService.buildPod(project: IProject, configuration: OpenShiftPodConf
                     commandArgs = initContainer.arguments
                 }
             }
+
+            if (configuration.probes.livenessProbe) {
+                configuration.containers.values.forEachIndexed { index, _ ->
+                    with(get(SPEC, CONTAINERS).get(index)) {
+                        get(LIVENESS_PROBE, HTTP_GET, PATH).set(configuration.probes.probePath)
+                        get(LIVENESS_PROBE, HTTP_GET, PORT).set(10000)
+                        get(LIVENESS_PROBE, HTTP_GET, SCHEME).set(HTTP)
+
+                        get(LIVENESS_PROBE, INITIAL_DELAY_SECONDS).set(10)
+                        get(LIVENESS_PROBE, TIMEOUT_SECONDS).set(10)
+                        get(LIVENESS_PROBE, PERIOD_SECONDS).set(10)
+                        get(LIVENESS_PROBE, SUCCESS_THRESHOLD).set(1)
+                        get(LIVENESS_PROBE, FAILURE_THRESHOLD).set(4)
+                    }
+                }
+            }
+
+            if (configuration.probes.readinessProbe) {
+                configuration.containers.values.forEachIndexed { index, _ ->
+                    with(get(SPEC, CONTAINERS).get(index)) {
+                        get(READINESS_PROBE, HTTP_GET, PATH).set(configuration.probes.probePath)
+                        get(READINESS_PROBE, HTTP_GET, PORT).set(10000)
+                        get(READINESS_PROBE, HTTP_GET, SCHEME).set(HTTP)
+
+                        get(READINESS_PROBE, INITIAL_DELAY_SECONDS).set(10)
+                        get(READINESS_PROBE, TIMEOUT_SECONDS).set(10)
+                        get(READINESS_PROBE, PERIOD_SECONDS).set(10)
+                        get(READINESS_PROBE, SUCCESS_THRESHOLD).set(1)
+                        get(READINESS_PROBE, FAILURE_THRESHOLD).set(4)
+                    }
+                }
+            }
+
             return Pod(this, client, emptyMap())
         }
     }

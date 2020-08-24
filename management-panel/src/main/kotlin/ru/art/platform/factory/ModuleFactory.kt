@@ -26,6 +26,7 @@ object ModuleFactory {
             .manualConfigurations(request.configuration.manualConfigurations)
             .additionalFiles(request.configuration.additionalFiles)
             .applications(request.configuration.applications)
+            .probesConfiguration(request.configuration.probesConfiguration)
             .build()
 
     fun createModule(currentModule: Module, request: ModuleUpdateRequest): Module = currentModule.toBuilder()
@@ -52,5 +53,6 @@ object ModuleFactory {
             .preparedConfigurations(request.newModuleConfiguration.preparedConfigurations)
             .manualConfigurations(request.newModuleConfiguration.manualConfigurations)
             .additionalFiles(request.newModuleConfiguration.additionalFiles)
+            .probesConfiguration(request.newModuleConfiguration.probesConfiguration)
             .build()
 }

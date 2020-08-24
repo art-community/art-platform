@@ -7,6 +7,7 @@ import ru.art.platform.agent.constants.OpenShiftConstants.DEPLOYMENT_TRIGGER_VAR
 import ru.art.platform.agent.constants.OpenShiftConstants.TRIGGER_LENGTH
 import ru.art.platform.agent.openShift.configureOpenShiftApplications
 import ru.art.platform.api.model.module.ModuleApplications
+import ru.art.platform.api.model.module.ProbesConfiguration
 import ru.art.platform.api.model.resource.OpenShiftResource
 import ru.art.platform.common.constants.Applications.APPLICATION_TYPES
 import ru.art.platform.common.constants.ErrorCodes.INSTALLATION_FAILED
@@ -17,6 +18,7 @@ import ru.art.platform.common.extractor.extractHostName
 import ru.art.platform.common.extractor.extractPath
 import ru.art.platform.open.shift.configurator.OpenShiftDeploymentConfigurator
 import ru.art.platform.open.shift.model.OpenShiftDeploymentPodWaitingConfiguration
+import ru.art.platform.open.shift.model.OpenShiftProbes
 import ru.art.platform.open.shift.service.*
 import java.util.Objects.isNull
 
@@ -32,6 +34,7 @@ class OpenShiftInstaller(private val resource: OpenShiftResource, private var na
     private var configs: MutableMap<String, String> = mutableMapOf()
     private var environmentVariables = mutableMapOf<String, String>()
     private var applications: ModuleApplications? = null
+    private var probes: OpenShiftProbes = OpenShiftProbes()
 
     fun publish(url: String): OpenShiftInstaller {
         routePath = url
@@ -129,6 +132,17 @@ class OpenShiftInstaller(private val resource: OpenShiftResource, private var na
         return this
     }
 
+    fun probes(probeConfiguration: ProbesConfiguration?): OpenShiftInstaller {
+        if (isNull(probeConfiguration)) return this
+
+        this.probes = OpenShiftProbes(
+                probePath = probeConfiguration?.path,
+                livenessProbe = probeConfiguration!!.isLivenessProbe,
+                readinessProbe = probeConfiguration.isReadinessProbe
+        )
+        return this
+    }
+
     fun install(then: OpenShiftInstallationResult.() -> Unit = {}): OpenShiftInstaller {
         environmentVariable(DEPLOYMENT_TRIGGER_VARIABLE_NAME, randomAlphanumeric(TRIGGER_LENGTH))
         openShift(resource) {
@@ -173,6 +187,8 @@ class OpenShiftInstaller(private val resource: OpenShiftResource, private var na
             }
 
             applications?.let(configureOpenShiftApplications(workingDirectory)::addApplications)?.let(environmentVariables::putAll)
+
+            probe(probes)
 
             container(name, DockerImageURI(image)) {
                 alwaysPullImage()
