@@ -13,22 +13,22 @@ import java.lang.System.getenv
 
 object IntegramService {
     fun sendTelegramMessage(message: String, integramUrl: String = getenv(INTEGRAM_URL_ENVIRONMENT)) {
-        val proxy = getenv(HTTP_PROXY_ENVIRONMENT)?.substringAfter(SCHEME_DELIMITER) ?: return
-
-        val proxyConfiguration = HttpProxyConfiguration(
-                userName = proxy.substringBefore(COLON),
-                password = proxy.substringAfter(COLON).substringBefore(AT_SIGN),
-                host = proxy.substringAfter(AT_SIGN).substringBefore(COLON),
-                port = proxy.substringAfterLast(COLON).substringBefore(SLASH).toInt()
-        )
-
         val request = entityBuilder().stringField(TEXT, message).build()
-        sendHttpRequest(proxyConfiguration, integramUrl, request)
+        getenv(HTTP_PROXY_ENVIRONMENT)?.substringAfter(SCHEME_DELIMITER)?.let { proxy ->
+            val proxyConfiguration = HttpProxyConfiguration(
+                    userName = proxy.substringBefore(COLON),
+                    password = proxy.substringAfter(COLON).substringBefore(AT_SIGN),
+                    host = proxy.substringAfter(AT_SIGN).substringBefore(COLON),
+                    port = proxy.substringAfterLast(COLON).substringBefore(SLASH).toInt()
+            )
+            sendHttpRequest(integramUrl, request, proxyConfiguration)
+            return
+        }
+        sendHttpRequest(integramUrl, request)
     }
 
-    fun sendTelegramMessage(message: String, integramUrl: String, proxy: ProxyResource?) {
-        proxy ?: return
+    fun sendTelegramMessage(message: String, integramUrl: String, proxy: ProxyResource) {
         val request = entityBuilder().stringField(TEXT, message).build()
-        sendHttpRequest(proxy.toConfiguration(), integramUrl, request)
+        sendHttpRequest(integramUrl, request, proxy.toConfiguration())
     }
 }

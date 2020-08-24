@@ -23,7 +23,7 @@ import ru.art.platform.api.model.resource.ProxyResource
 import javax.net.ssl.SSLContext
 
 object HttpProxyCommunicator {
-    fun sendHttpRequest(proxy: HttpProxyConfiguration, url: String, request: Value) {
+    fun sendHttpRequest(url: String, request: Value, proxy: HttpProxyConfiguration) {
         val sslContext: SSLContext = SSLContextBuilder()
                 .loadTrustMaterial(null) { _, _ -> true }
                 .build()
@@ -44,6 +44,15 @@ object HttpProxyCommunicator {
                         ))
                         .build())
                 .config(RequestConfig.custom().setProxy(HttpHost(proxy.host, proxy.port)).build())
+                .post()
+                .produces(applicationJsonUtf8())
+                .consumes(applicationJsonUtf8())
+                .requestMapper<Value> { value -> value }
+                .execute<Value, Any>(request)
+    }
+
+    fun sendHttpRequest(url: String, request: Value) {
+        httpCommunicator(url)
                 .post()
                 .produces(applicationJsonUtf8())
                 .consumes(applicationJsonUtf8())

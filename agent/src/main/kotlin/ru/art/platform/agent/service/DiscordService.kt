@@ -22,6 +22,6 @@ object DiscordService {
         )
 
         val request = entityBuilder().stringField(CONTENT, message).build()
-        sendHttpRequest(proxyConfiguration, url, request)
+        sendHttpRequest(url, request, proxyConfiguration)
     }
 }
