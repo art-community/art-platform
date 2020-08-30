@@ -1,6 +1,6 @@
 package ru.art.platform.agent.service
 
-import ru.art.core.constants.DateConstants.YYYY_MM_DD_T_HH_MM_SS_24H_DASH_FORMAT
+import ru.art.core.constants.DateConstants.*
 import ru.art.core.constants.StringConstants.*
 import ru.art.core.extension.ExceptionExtensions.nullIfException
 import ru.art.entity.Entity
@@ -47,6 +47,7 @@ import java.time.ZoneId.systemDefault
 import java.time.ZonedDateTime.ofInstant
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.*
+import java.util.*
 import java.util.stream.IntStream.range
 
 
@@ -91,9 +92,14 @@ private fun parseAlerts(alerts: List<Entity>): List<Alert> = alerts.map { alert 
 private fun createAlertMessage(alert: Alert): AlertMessage {
     val startDateTimeWithoutTz = alert.startsAt.split(REGEX_ANY)[0]
     val startDateTime = YYYY_MM_DD_T_HH_MM_SS_24H_DASH_FORMAT.get().parse(startDateTimeWithoutTz.substring(0, startDateTimeWithoutTz.lastIndexOf(DOT)))
+    val pattern = ofPattern(ALERT_MANAGER_ALERT_FORMAT, RUSSIAN_LOCALE)
+    val startDateTimeAsString = pattern.format(startDateTime.toInstant().plusSeconds(startDateTime.toInstant().atZone(systemDefault()).offset.totalSeconds.toLong()))
     val endDateTime = nullIfException {
         val endDateTimeWithoutTz = alert.endsAt.split(REGEX_ANY)[0]
         YYYY_MM_DD_T_HH_MM_SS_24H_DASH_FORMAT.get().parse(endDateTimeWithoutTz.substring(0, endDateTimeWithoutTz.lastIndexOf(DOT)))
+    }
+    val endDateTimeAsString = endDateTime?.let { time ->
+        pattern.format(time.toInstant().plusSeconds(time.toInstant().atZone(systemDefault()).offset.totalSeconds.toLong()))
     }
 
     return when {
@@ -102,10 +108,8 @@ private fun createAlertMessage(alert: Alert): AlertMessage {
                 status = alert.status,
                 severity = parseAlertSeverity(alert.labels[ALERT_MANAGER_SEVERITY] ?: error(PLATFORM_ERROR)),
                 description = alert.annotations[ALERT_MANAGER_DESCRIPTION] ?: error(PLATFORM_ERROR),
-                startTime = ofInstant(startDateTime.toInstant(), systemDefault()).let(ofPattern(ALERT_MANAGER_ALERT_FORMAT, RUSSIAN_LOCALE)::format),
-                endTime = endDateTime
-                        ?.let { time -> ofInstant(time.toInstant(), systemDefault()) }
-                        ?.let(ofPattern(ALERT_MANAGER_ALERT_FORMAT, RUSSIAN_LOCALE)::format),
+                startTime = startDateTimeAsString,
+                endTime = endDateTimeAsString,
                 module = alert.labels[ALERT_MANAGER_INSTANCE] ?: error(PLATFORM_ERROR),
                 name = alert.labels[ALERT_MANAGER_ALERT_NAME] ?: error(PLATFORM_ERROR)
         )
@@ -115,10 +119,8 @@ private fun createAlertMessage(alert: Alert): AlertMessage {
                 status = alert.status,
                 severity = parseAlertSeverity(alert.labels[ALERT_MANAGER_SEVERITY] ?: error(PLATFORM_ERROR)),
                 description = alert.annotations[ALERT_MANAGER_DESCRIPTION] ?: error(PLATFORM_ERROR),
-                startTime = ofInstant(startDateTime.toInstant(), systemDefault()).let(ofPattern(ALERT_MANAGER_ALERT_FORMAT, RUSSIAN_LOCALE)::format),
-                endTime = endDateTime
-                        ?.let { time -> ofInstant(time.toInstant(), systemDefault()) }
-                        ?.let(ofPattern(ALERT_MANAGER_ALERT_FORMAT, RUSSIAN_LOCALE)::format),
+                startTime = startDateTimeAsString,
+                endTime = endDateTimeAsString,
                 system = alert.labels[ALERT_MANAGER_SYSTEM] ?: error(PLATFORM_ERROR),
                 instance = alert.labels[ALERT_MANAGER_INSTANCE] ?: error(PLATFORM_ERROR),
                 mrf = alert.labels[ALERT_MANAGER_MRF] ?: error(PLATFORM_ERROR),
@@ -131,10 +133,8 @@ private fun createAlertMessage(alert: Alert): AlertMessage {
                 status = alert.status,
                 severity = parseAlertSeverity(alert.labels[ALERT_MANAGER_SEVERITY] ?: error(PLATFORM_ERROR)),
                 description = alert.annotations[ALERT_MANAGER_DESCRIPTION] ?: error(PLATFORM_ERROR),
-                startTime = ofInstant(startDateTime.toInstant(), systemDefault()).let(ofPattern(ALERT_MANAGER_ALERT_FORMAT, RUSSIAN_LOCALE)::format),
-                endTime = endDateTime
-                        ?.let { time -> ofInstant(time.toInstant(), systemDefault()) }
-                        ?.let(ofPattern(ALERT_MANAGER_ALERT_FORMAT, RUSSIAN_LOCALE)::format),
+                startTime = startDateTimeAsString,
+                endTime = endDateTimeAsString,
                 instance = alert.labels[ALERT_MANAGER_INSTANCE] ?: error(PLATFORM_ERROR),
                 name = alert.labels[ALERT_MANAGER_ALERT_NAME] ?: error(PLATFORM_ERROR)
         )
@@ -144,10 +144,8 @@ private fun createAlertMessage(alert: Alert): AlertMessage {
                 status = alert.status,
                 severity = parseAlertSeverity(alert.labels[ALERT_MANAGER_SEVERITY] ?: error(PLATFORM_ERROR)),
                 description = alert.annotations[ALERT_MANAGER_DESCRIPTION] ?: error(PLATFORM_ERROR),
-                startTime = ofInstant(startDateTime.toInstant(), systemDefault()).let(ofPattern(ALERT_MANAGER_ALERT_FORMAT, RUSSIAN_LOCALE)::format),
-                endTime = endDateTime
-                        ?.let { time -> ofInstant(time.toInstant(), systemDefault()) }
-                        ?.let(ofPattern(ALERT_MANAGER_ALERT_FORMAT, RUSSIAN_LOCALE)::format),
+                startTime = startDateTimeAsString,
+                endTime = endDateTimeAsString,
                 instance = alert.labels[ALERT_MANAGER_INSTANCE] ?: error(PLATFORM_ERROR),
                 application = alert.labels[ALERT_MANAGER_APPLICATION] ?: error(PLATFORM_ERROR),
                 name = alert.labels[ALERT_MANAGER_ALERT_NAME] ?: error(PLATFORM_ERROR)
