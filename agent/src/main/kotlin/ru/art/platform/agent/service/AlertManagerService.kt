@@ -45,7 +45,9 @@ import java.lang.System.getenv
 import java.time.LocalDateTime
 import java.time.ZoneId.of
 import java.time.ZoneId.systemDefault
+import java.time.ZoneOffset
 import java.time.ZoneOffset.UTC
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter.ofPattern
 import java.util.stream.IntStream.range
 
@@ -92,13 +94,13 @@ private fun createAlertMessage(alert: Alert): AlertMessage {
     val startDateTimeWithoutTz = alert.startsAt.split(REGEX_ANY)[0]
     val startDateTime = YYYY_MM_DD_T_HH_MM_SS_24H_DASH_FORMAT.get().parse(startDateTimeWithoutTz.substring(0, startDateTimeWithoutTz.lastIndexOf(DOT)))
     val pattern = ofPattern(ALERT_MANAGER_ALERT_FORMAT, RUSSIAN_LOCALE)
-    val startDateTimeAsString = pattern.format(LocalDateTime.ofInstant(startDateTime.toInstant(), of(UTC.id)).atZone(systemDefault()))
+    val startDateTimeAsString = pattern.format(LocalDateTime.ofInstant(startDateTime.toInstant().plusSeconds(ZonedDateTime.now().offset.totalSeconds.toLong()), systemDefault()))
     val endDateTime = nullIfException {
         val endDateTimeWithoutTz = alert.endsAt.split(REGEX_ANY)[0]
         YYYY_MM_DD_T_HH_MM_SS_24H_DASH_FORMAT.get().parse(endDateTimeWithoutTz.substring(0, endDateTimeWithoutTz.lastIndexOf(DOT)))
     }
     val endDateTimeAsString = endDateTime?.let { time ->
-        pattern.format(LocalDateTime.ofInstant(time.toInstant(), of(UTC.id)).atZone(systemDefault()))
+        pattern.format(LocalDateTime.ofInstant(time.toInstant().plusSeconds(ZonedDateTime.now().offset.totalSeconds.toLong()), systemDefault()))
     }
 
     return when {
