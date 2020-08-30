@@ -1,6 +1,6 @@
 package ru.art.platform.agent.service
 
-import ru.art.core.constants.DateConstants.*
+import ru.art.core.constants.DateConstants.YYYY_MM_DD_T_HH_MM_SS_24H_DASH_FORMAT
 import ru.art.core.constants.StringConstants.*
 import ru.art.core.extension.ExceptionExtensions.nullIfException
 import ru.art.entity.Entity
@@ -42,12 +42,11 @@ import ru.art.platform.common.constants.CommonConstants.RUSSIAN_LOCALE
 import ru.art.platform.common.constants.ErrorCodes.PLATFORM_ERROR
 import ru.art.task.deferred.executor.SchedulerModuleActions.asynchronous
 import java.lang.System.getenv
-import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneId.of
 import java.time.ZoneId.systemDefault
-import java.time.ZonedDateTime.ofInstant
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeFormatter.*
-import java.util.*
+import java.time.ZoneOffset.UTC
+import java.time.format.DateTimeFormatter.ofPattern
 import java.util.stream.IntStream.range
 
 
@@ -93,13 +92,13 @@ private fun createAlertMessage(alert: Alert): AlertMessage {
     val startDateTimeWithoutTz = alert.startsAt.split(REGEX_ANY)[0]
     val startDateTime = YYYY_MM_DD_T_HH_MM_SS_24H_DASH_FORMAT.get().parse(startDateTimeWithoutTz.substring(0, startDateTimeWithoutTz.lastIndexOf(DOT)))
     val pattern = ofPattern(ALERT_MANAGER_ALERT_FORMAT, RUSSIAN_LOCALE)
-    val startDateTimeAsString = pattern.format(startDateTime.toInstant().plusSeconds(startDateTime.toInstant().atZone(systemDefault()).offset.totalSeconds.toLong()))
+    val startDateTimeAsString = pattern.format(LocalDateTime.ofInstant(startDateTime.toInstant(), of(UTC.id)).atZone(systemDefault()))
     val endDateTime = nullIfException {
         val endDateTimeWithoutTz = alert.endsAt.split(REGEX_ANY)[0]
         YYYY_MM_DD_T_HH_MM_SS_24H_DASH_FORMAT.get().parse(endDateTimeWithoutTz.substring(0, endDateTimeWithoutTz.lastIndexOf(DOT)))
     }
     val endDateTimeAsString = endDateTime?.let { time ->
-        pattern.format(time.toInstant().plusSeconds(time.toInstant().atZone(systemDefault()).offset.totalSeconds.toLong()))
+        pattern.format(LocalDateTime.ofInstant(time.toInstant(), of(UTC.id)).atZone(systemDefault()))
     }
 
     return when {
