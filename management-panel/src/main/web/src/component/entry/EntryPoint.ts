@@ -241,7 +241,7 @@ class EntryPoint extends ConfigurableWidget<EntryPoint, Configuration> {
             {
                 anchorOrigin: {
                     vertical: "bottom",
-                    horizontal: "right"
+                    horizontal: "center"
                 },
                 maxSnack: MAX_SNAKES
             }
