@@ -341,12 +341,16 @@ export const requestResponse = (request: any, onComplete: Dispatch<any> = doNoth
 
 export const requestStream = (request: any, onNext: Dispatch<any> = doNothing, onComplete: DispatchWithoutAction = doNothing, onError: Dispatch<any> = doNothing) => {
     const client = PlatformClient.newPlatformClient();
-    client.connect(STREAM_RSOCKET_CLIENT_NAME, () => client.requestStream(request, onNext, onComplete, onError), onError);
+    let stream;
+    client.connect(STREAM_RSOCKET_CLIENT_NAME, () => stream = client.requestStream(request, onNext, onComplete, onError), onError);
+    return () => stream?.();
 }
 
 export const infinityRequestStream = (request: any, onNext: Dispatch<any> = doNothing, onError: Dispatch<any> = doNothing) => {
     const client = PlatformClient.newPlatformClient();
-    client.connect(INFINITY_STREAM_RSOCKET_CLIENT_NAME, () => client.infinityRequestStream(request, onNext, onError), onError);
+    let stream;
+    client.connect(INFINITY_STREAM_RSOCKET_CLIENT_NAME, () => stream = client.infinityRequestStream(request, onNext, onError), onError);
+    return () => stream?.();
 }
 
 export const chunkedRequest = (chunks: any[], onComplete: DispatchWithoutAction = doNothing, onError: Dispatch<any> = doNothing) =>
