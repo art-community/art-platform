@@ -48,6 +48,7 @@ export class PlatformClient {
 
     private constructor(rsocketUrl: string) {
         this.#rsocketUrl = rsocketUrl;
+        clients.push(this);
     }
 
     token = (token: string) => {
@@ -302,8 +303,12 @@ export class PlatformClient {
         if (!this.#rsocket) {
             return;
         }
-        this.#rsocket.close();
-        console.log(`${this.#name} successfully disconnected from ${this.#rsocketUrl}`);
+        try {
+            this.#rsocket.close();
+            console.log(`${this.#name} successfully disconnected from ${this.#rsocketUrl}`);
+        } catch (exception) {
+            console.warn(exception);
+        }
     };
 
     #log = (message: () => string) => {
@@ -320,20 +325,21 @@ export class PlatformClient {
     static newPlatformClient = (url: string = RSOCKET_DEFAULT_URL): PlatformClient => new PlatformClient(url);
 }
 
+const clients: PlatformClient[] = []
+
 export const requestResponse = (request: any, onComplete: Dispatch<any> = doNothing, onError: Dispatch<any> = doNothing) =>
     PlatformClient.platformClient().requestResponse(request, onComplete, onError);
 
 export const requestStream = (request: any, onNext: Dispatch<any> = doNothing, onComplete: DispatchWithoutAction = doNothing, onError: Dispatch<any> = doNothing) =>
-    PlatformClient.platformClient().requestStream(request, onNext, onComplete, onError);
+    PlatformClient.newPlatformClient().requestStream(request, onNext, onComplete, onError);
 
 export const infinityRequestStream = (request: any, onNext: Dispatch<any> = doNothing, onError: Dispatch<any> = doNothing) =>
-    PlatformClient.platformClient().infinityRequestStream(request, onNext, onError);
+    PlatformClient.newPlatformClient().infinityRequestStream(request, onNext, onError);
 
 export const chunkedRequest = (chunks: any[], onComplete: DispatchWithoutAction = doNothing, onError: Dispatch<any> = doNothing) =>
-    PlatformClient.platformClient().chunkedRequest(chunks, onComplete, onError);
+    PlatformClient.newPlatformClient().chunkedRequest(chunks, onComplete, onError);
 
 export const fireAndForget = (request: any) =>
     PlatformClient.platformClient().fireAndForget(request);
 
-export const disposeRsocket = () =>
-    PlatformClient.platformClient().disposeRsocket();
+export const disposeRsockets = () => clients.forEach(client => client.disposeRsocket());

@@ -2,7 +2,7 @@ import * as ReactDOM from "react-dom";
 import 'reflect-metadata'
 import "../framework/extensions/extensions"
 import maintenanceCat from "../images//maintenance-cat.png"
-import {disposeRsocket, PlatformClient} from "../client/PlatformClient";
+import {disposeRsockets, PlatformClient} from "../client/PlatformClient";
 // @ts-ignore
 import {registerObserver} from "react-perf-devtool";
 import {deactivateStreams} from "../streams/Streams";
@@ -29,7 +29,7 @@ if (development()) {
 window.addEventListener("beforeunload", event => {
     event.preventDefault();
     deactivateStreams();
-    disposeRsocket()
+    disposeRsockets()
 });
 
 const style = {
