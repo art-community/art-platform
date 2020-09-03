@@ -18,7 +18,7 @@ import {ModuleInformation} from "../../../model/ModuleTypes";
 import {useModuleApi} from "../../../api/ModuleApi";
 import {moduleCard} from "../../embeddable/module/ModuleCard";
 import {modulesInstallationDialog} from "../../embeddable/module/ModulesInstallationDialog";
-import {onAnyModuleUpdated, onModuleAdded, onModuleDeleted} from "../../../streams/ModuleStream";
+import {onModuleAdded, onModuleDeleted} from "../../../streams/ModuleStream";
 import {panel} from "../../../framework/dsl/managed/ManagedPanel";
 import {moduleIsChanging} from "../../../service/ModuleService";
 import {MODULE_FILTERABLE_STATES} from "../../../constants/ModuleStateConstants";
@@ -235,9 +235,7 @@ export class ModulesPage extends Widget<ModulesPage, PlatformContextual, Configu
 
         this.#hasProjects() && this.onLoad(() => this.#updateFilter(false))
 
-        this.subscribe(() => onModuleAdded(() => this.#updateFilter(true)))
-        .subscribe(() => onAnyModuleUpdated(() => this.#updateFilter(true)))
-        .subscribe(() => onModuleDeleted(() => this.#updateFilter(true)));
+        this.subscribe(() => onModuleAdded(() => this.#updateFilter(true))).subscribe(() => onModuleDeleted(() => this.#updateFilter(true)));
     }
 
     draw = this.#page.render;
