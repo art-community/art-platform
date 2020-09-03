@@ -120,9 +120,8 @@ export class ModulesPage extends Widget<ModulesPage, PlatformContextual, Configu
             }
         })
 
-        this.#cards.arrangeWidgets(modules.map(module => module.id))
-
         if (!silent) {
+            this.#cards.arrangeWidgets(modules.map(module => module.id))
             this.#filtering = false;
         }
     });
