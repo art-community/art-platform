@@ -246,7 +246,13 @@ export class ModuleCard extends Widget<ModuleCard, Properties, Configuration> {
                         .with({
                             tooltip: "Перезапустить",
                             icon: proxy(<SettingsBackupRestoreOutlined color={"primary"}/>),
-                            onClick: () => this.#moduleApi().restartModule(this.#module().id)
+                            onClick: () => this.lock(() => {
+                                this.configuration.module.value = {
+                                    state: MODULE_RESTARTING_STATE,
+                                    ...this.configuration.module.value,
+                                };
+                                this.#moduleApi().restartModule(this.#module().id)
+                            })
                         })
                         .with({
                             tooltip: "Остановить",
