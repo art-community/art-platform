@@ -1,4 +1,6 @@
 export const DEFAULT_RSOCKET_CLIENT_NAME = "Default RSocket client";
+export const STREAM_RSOCKET_CLIENT_NAME = "Stream RSocket client";
+export const INFINITY_STREAM_RSOCKET_CLIENT_NAME = "Infinity stream RSocket client";
 
 export const RSOCKET_DEFAULT_PORT = 10001;
 // @ts-ignore

@@ -3,7 +3,16 @@ import RSocketWebSocketClient from "rsocket-websocket-client";
 import {decode, encode} from "msgpack-lite";
 import Cookies from "js-cookie";
 import {ISubscription, Payload, ReactiveSocket} from "rsocket-types";
-import {apiLogsEnabled, RETRY_TIMEOUT_SECONDS, RSOCKET_DEFAULT_URL, RSOCKET_FUNCTION, RSOCKET_OPTIONS, RSOCKET_REQUEST_COUNT} from "../constants/ApiConstants";
+import {
+    apiLogsEnabled,
+    INFINITY_STREAM_RSOCKET_CLIENT_NAME,
+    RETRY_TIMEOUT_SECONDS,
+    RSOCKET_DEFAULT_URL,
+    RSOCKET_FUNCTION,
+    RSOCKET_OPTIONS,
+    RSOCKET_REQUEST_COUNT,
+    STREAM_RSOCKET_CLIENT_NAME
+} from "../constants/ApiConstants";
 import {Flowable} from "rsocket-flowable";
 import {Dispatch, DispatchWithoutAction} from "react";
 import moment from "moment";
@@ -33,6 +42,8 @@ export const createFunctionRequest = (methodId: string, requestData: any = null)
     },
     requestData: requestData
 });
+
+const clients: PlatformClient[] = []
 
 export class PlatformClient {
     protected static INSTANCE: PlatformClient;
@@ -325,19 +336,21 @@ export class PlatformClient {
     static newPlatformClient = (url: string = RSOCKET_DEFAULT_URL): PlatformClient => new PlatformClient(url);
 }
 
-const clients: PlatformClient[] = []
-
 export const requestResponse = (request: any, onComplete: Dispatch<any> = doNothing, onError: Dispatch<any> = doNothing) =>
     PlatformClient.platformClient().requestResponse(request, onComplete, onError);
 
-export const requestStream = (request: any, onNext: Dispatch<any> = doNothing, onComplete: DispatchWithoutAction = doNothing, onError: Dispatch<any> = doNothing) =>
-    PlatformClient.newPlatformClient().requestStream(request, onNext, onComplete, onError);
+export const requestStream = (request: any, onNext: Dispatch<any> = doNothing, onComplete: DispatchWithoutAction = doNothing, onError: Dispatch<any> = doNothing) => {
+    const client = PlatformClient.newPlatformClient();
+    client.connect(STREAM_RSOCKET_CLIENT_NAME, () => client.requestStream(request, onNext, onComplete, onError), onError);
+}
 
-export const infinityRequestStream = (request: any, onNext: Dispatch<any> = doNothing, onError: Dispatch<any> = doNothing) =>
-    PlatformClient.newPlatformClient().infinityRequestStream(request, onNext, onError);
+export const infinityRequestStream = (request: any, onNext: Dispatch<any> = doNothing, onError: Dispatch<any> = doNothing) => {
+    const client = PlatformClient.newPlatformClient();
+    client.connect(INFINITY_STREAM_RSOCKET_CLIENT_NAME, () => client.infinityRequestStream(request, onNext, onError), onError);
+}
 
 export const chunkedRequest = (chunks: any[], onComplete: DispatchWithoutAction = doNothing, onError: Dispatch<any> = doNothing) =>
-    PlatformClient.newPlatformClient().chunkedRequest(chunks, onComplete, onError);
+    PlatformClient.platformClient().chunkedRequest(chunks, onComplete, onError);
 
 export const fireAndForget = (request: any) =>
     PlatformClient.platformClient().fireAndForget(request);
