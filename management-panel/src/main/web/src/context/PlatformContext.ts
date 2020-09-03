@@ -1,8 +1,8 @@
-import {applicationsLoader, ApplicationsLoader} from "../loader/ApplicationsLoader";
-import {resourcesLoader, ResourcesLoader} from "../loader/ResourcesLoader";
-import {projectsLoader, ProjectsLoader} from "../loader/ProjectsLoader";
-import {modulesLoader, ModulesLoader} from "../loader/ModulesLoader";
-import {assembliesLoader, AssembliesLoader} from "../loader/AssembliesLoader";
+import {applicationsLoader} from "../loader/ApplicationsLoader";
+import {resourcesLoader} from "../loader/ResourcesLoader";
+import {projectsLoader} from "../loader/ProjectsLoader";
+import {modulesLoader} from "../loader/ModulesLoader";
+import {assembliesLoader} from "../loader/AssembliesLoader";
 import {Widget} from "../framework/widgets/Widget";
 import {useApplicationApi} from "../api/ApplicationsApi";
 import {useProjectApi} from "../api/ProjectApi";
@@ -13,12 +13,8 @@ import {lazy} from "../framework/pattern/Lazy";
 import {conditional} from "../framework/pattern/Conditional";
 import {magicLoader} from "../component/embeddable/common/PlatformLoaders";
 import {Synchronizer} from "../framework/pattern/Synchronizer";
-import {projectStream} from "../streams/ProjectStream";
-import {assemblyStream} from "../streams/AssemblyStream";
-import {moduleStream} from "../streams/ModuleStream";
 import {usePreparedConfigurationApi} from "../api/PreparedConfigurationApi";
-import {preparedConfigurationsLoader, PreparedConfigurationsLoader} from "../loader/PreparedConfigurationsLoader";
-import {PreparedConfigurationFilterCriteria} from "../model/PreparedConfigurationTypes";
+import {preparedConfigurationsLoader} from "../loader/PreparedConfigurationsLoader";
 
 type WidgetFactory = (context: PlatformContext) => Widget<any>;
 

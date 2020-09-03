@@ -38,7 +38,7 @@ export const subscribeOnProjects = (notifications: Notifications) => {
                 notifications.success(`Проект ${project.name} успешно инициализирован`);
                 return;
             case PROJECT_INITIALIZATION_FAILED_STATE:
-                notifications.error(`Не удалось инциализировать проект ${project.name}`);
+                notifications.error(`Не удалось инициализировать проект ${project.name}`);
                 return;
             case PROJECT_RELOAD_STARTED_STATE:
                 notifications.info(`Проект ${project.name} обновляется`);

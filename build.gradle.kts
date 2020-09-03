@@ -53,6 +53,9 @@ subprojects {
         dependencyRefreshing {
             refreshingRateInSeconds = 1
         }
+        externalDependencyVersions {
+            kotlinVersion = "1.4+"
+        }
     }
 
     tasks.withType<KotlinCompile> {
