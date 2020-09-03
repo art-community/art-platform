@@ -3,25 +3,28 @@ export const DEFAULT_RSOCKET_CLIENT_NAME = "Default RSocket client";
 export const RSOCKET_DEFAULT_PORT = 10001;
 // @ts-ignore
 const rsocketProtocolHtml = document.querySelector("meta[name='rsocketProtocol']")?.content;
-export const RSOCKET_PROTOCOL = process.env.RSOCKET_PROTOCOL
-    ? process.env.RSOCKET_PROTOCOL
-    : rsocketProtocolHtml && rsocketProtocolHtml != "{{rsocketProtocol}}"
+export const RSOCKET_PROTOCOL =
+    rsocketProtocolHtml && rsocketProtocolHtml != "{{rsocketProtocol}}"
         ? rsocketProtocolHtml
+        : process.env.RSOCKET_PROTOCOL
+        ? process.env.RSOCKET_PROTOCOL
         : "ws";
 // @ts-ignore
 const rsocketHostHtml = document.querySelector("meta[name='rsocketHost']")?.content;
-export const RSOCKET_HOST = process.env.RSOCKET_HOST
-    ? process.env.RSOCKET_HOST
-    : rsocketHostHtml && rsocketHostHtml != "{{rsocketHost}}"
+export const RSOCKET_HOST =
+    rsocketHostHtml && rsocketHostHtml != "{{rsocketHost}}"
         ? rsocketHostHtml
-        : window.location.hostname;
+        : process.env.RSOCKET_HOST
+        ? process.env.RSOCKET_HOST
+        : window.location.hostname
 // @ts-ignore
 const rsocketPortHtml = document.querySelector("meta[name='rsocketPort']")?.content;
-export const RSOCKET_PORT = process.env.RSOCKET_PORT
-    ? process.env.RSOCKET_PORT
-    : rsocketPortHtml && rsocketPortHtml != "{{rsocketPort}}"
+export const RSOCKET_PORT =
+    rsocketPortHtml && rsocketPortHtml != "{{rsocketPort}}"
         ? rsocketPortHtml
-        : RSOCKET_DEFAULT_PORT;
+        : process.env.RSOCKET_PORT
+        ? process.env.RSOCKET_PORT
+        : RSOCKET_DEFAULT_PORT
 export const RSOCKET_DEFAULT_URL = `${RSOCKET_PROTOCOL}://${RSOCKET_HOST}:${RSOCKET_PORT}`;
 export const RSOCKET_REQUEST_COUNT = 9007199254740991;
 
