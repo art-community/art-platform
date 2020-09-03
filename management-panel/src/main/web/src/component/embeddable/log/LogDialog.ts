@@ -32,7 +32,7 @@ export class LogDialog extends Widget<LogDialog, Properties> {
     #dialog = hooked(useStyle).cache(style => dialog({
         contentStyle: style,
         label: this.properties.label,
-        fullScreen: true,
+        maxWidth: "xl",
         visible: true
     })
     .widget(this.#viewer));
