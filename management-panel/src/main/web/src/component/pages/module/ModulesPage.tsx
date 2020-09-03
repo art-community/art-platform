@@ -135,8 +135,6 @@ export class ModulesPage extends Widget<ModulesPage, PlatformContextual, Configu
 
     #modules = () => verticalGrid({spacing: 1, wrap: "nowrap"})
     .pushWidgets(this.#getVersions().map(version => panel(this.#getModuleCardsByVersion(version.version), {
-        lazy: false,
-        persistent: false,
         summaryLeftWidget: hooked(useStyle).cache(style => styled(chip({
             label: this.configuration.modules.value!.count(module => module.artifact.version == version.version),
             color: "secondary"
