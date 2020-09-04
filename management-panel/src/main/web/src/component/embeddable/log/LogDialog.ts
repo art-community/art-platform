@@ -33,6 +33,7 @@ export class LogDialog extends Widget<LogDialog, Properties> {
         contentStyle: style,
         label: this.properties.label,
         maxWidth: "xl",
+        fullWidth: true,
         visible: true
     })
     .widget(this.#viewer));
