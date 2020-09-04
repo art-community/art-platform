@@ -105,9 +105,8 @@ export class AssembliesPage extends Widget<AssembliesPage, PlatformContextual, C
             }
         })
 
-        this.#cards.arrangeWidgets(assemblies.map(assembly => assembly.id))
-
         if (!silent) {
+            this.#cards.arrangeWidgets(assemblies.map(assembly => assembly.id))
             this.#filtering = false;
         }
     });
