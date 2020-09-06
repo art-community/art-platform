@@ -41,7 +41,7 @@ import {cssBaseLine} from "../../framework/widgets/CssBaseLine";
 import {applicationsPage} from '../pages/ApplicationsPage';
 import {platformContext} from "../../context/PlatformContext";
 import {actionOfPath} from "../../constants/SideBarActions";
-import {administrationPage} from "../pages/AssembliesPage";
+import {administrationPage} from "../pages/AdministrationPage";
 import {networkAccessesPage} from "../pages/NetworkAccessesPage";
 import {configurationsPage} from "../pages/ConfigurationsPage";
 import {
