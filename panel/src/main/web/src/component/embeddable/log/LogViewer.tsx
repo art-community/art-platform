@@ -57,13 +57,13 @@ export class LogViewer extends Widget<LogViewer, Properties, Configuration> {
         }
         const records = this.configuration.records.value!;
         if (records.length == 1) {
-            return <div ref={ref => ref && this.#scroll(ref)}>
+            return <div key={0} ref={ref => ref && this.#scroll(ref)}>
                 {html(this.#filter.toHtml(records.last())).render()}
             </div>
         }
         return <>
             {records.slice(0, records.length - 2).map(this.#record)}
-            <div ref={ref => ref && this.#scroll(ref)}>
+            <div key={records.length - 1} ref={ref => ref && this.#scroll(ref)}>
                 {html(this.#filter.toHtml(records.last())).render()}
             </div>
         </>
