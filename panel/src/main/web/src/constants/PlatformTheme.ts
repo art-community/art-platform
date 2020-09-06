@@ -1,4 +1,4 @@
-import {cyan, deepPurple, lightGreen, orange, purple, teal, yellow} from "@material-ui/core/colors";
+import {lightGreen, orange, purple, teal} from "@material-ui/core/colors";
 import {createMuiTheme, Theme} from "@material-ui/core";
 
 export enum PlatformTheme {

@@ -1,22 +1,22 @@
 import * as React from "react";
 import {useTheme} from "@material-ui/core";
-import {observe} from "../../../framework/pattern/Observable";
-import {label} from "../../../framework/dsl/managed/ManagedLabel";
-import {horizontalGrid, verticalGrid} from "../../../framework/dsl/managed/ManagedGrid";
-import {Widget} from "../../../framework/widgets/Widget";
-import {button} from "../../../framework/dsl/managed/ManagedButton";
-import {hooked} from "../../../framework/pattern/Hooked";
-import {styled} from "../../../framework/widgets/Styled";
-import {ARTIFACTS_RESOURCE, GIT_RESOURCE, OPEN_SHIFT_RESOURCE, PLATFORM_RESOURCE, PROXY_RESOURCE} from "../../../constants/ResourceConstants";
-import {resourceCard} from "../../embeddable/resource/ResourceCard";
-import {divider} from "../../../framework/dsl/simple/SimpleDivider";
+import {observe} from "../../framework/pattern/Observable";
+import {label} from "../../framework/dsl/managed/ManagedLabel";
+import {horizontalGrid, verticalGrid} from "../../framework/dsl/managed/ManagedGrid";
+import {Widget} from "../../framework/widgets/Widget";
+import {button} from "../../framework/dsl/managed/ManagedButton";
+import {hooked} from "../../framework/pattern/Hooked";
+import {styled} from "../../framework/widgets/Styled";
+import {ARTIFACTS_RESOURCE, GIT_RESOURCE, OPEN_SHIFT_RESOURCE, PLATFORM_RESOURCE, PROXY_RESOURCE} from "../../constants/ResourceConstants";
+import {resourceCard} from "../embeddable/resource/ResourceCard";
+import {divider} from "../../framework/dsl/simple/SimpleDivider";
 import AddOutlined from "@material-ui/icons/AddOutlined";
-import {group} from "../../../framework/dsl/simple/SimpleGroup";
-import {proxy} from "../../../framework/widgets/Proxy";
-import {resourceAdditionDialog} from "../../embeddable/resource/ResourceAdditionDialog";
+import {group} from "../../framework/dsl/simple/SimpleGroup";
+import {proxy} from "../../framework/widgets/Proxy";
+import {resourceAdditionDialog} from "../embeddable/resource/ResourceAdditionDialog";
 import Computer from "@material-ui/icons/Computer";
-import {PlatformContext, PlatformContextual} from "../../../context/PlatformContext";
-import {optional} from "../../../framework/pattern/Optional";
+import {PlatformContext, PlatformContextual} from "../../context/PlatformContext";
+import {optional} from "../../framework/pattern/Optional";
 
 const useStyle = () => {
     const theme = useTheme();

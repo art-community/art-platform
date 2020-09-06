@@ -18,8 +18,8 @@ import {authenticate} from "../../api/UserApi";
 import {sideBar} from "../sidebar/SideBar";
 import Cookies from "js-cookie";
 import {bigLoader} from "../../framework/dsl/simple/SimpleLoader";
-import {registrationPage} from "../pages/registration/RegistrationPage";
-import {authorizationPage} from '../pages/authorization/AuthorizationPage';
+import {registrationPage} from "../pages/RegistrationPage";
+import {authorizationPage} from '../pages/AuthorizationPage';
 import {ConfigurableWidget, Widget} from "../../framework/widgets/Widget";
 import {streamsActivator} from "../stream/StreamsActivator";
 import {User} from "../../model/UserTypes";
@@ -27,23 +27,23 @@ import {browserRouter, redirect, routingSwitch} from "../../framework/dsl/simple
 import {provideTheme} from "../../framework/dsl/managed/ManagedThemeProvider";
 import {group} from "../../framework/dsl/simple/SimpleGroup";
 import {conditional} from "../../framework/pattern/Conditional";
-import {projectsPage} from "../pages/project/ProjectsPage";
-import {resourcesPage} from "../pages/resource/ResourcesPage";
+import {projectsPage} from "../pages/ProjectsPage";
+import {resourcesPage} from "../pages/ResourcesPage";
 import {provideSnackbar} from "../../framework/dsl/simple/SimpleSnackbarProvider";
-import {assembliesPage} from "../pages/assemblies/AssembliesPage";
+import {assembliesPage} from "../pages/AssembliesPage";
 import {THEME_COOKIE, TOKEN_COOKIE} from "../../constants/Cookies";
 import {PlatformTheme, THEMES} from "../../constants/PlatformTheme";
 import {MAX_SNAKES} from "../../constants/WidgetsConstants";
 import {Dispatch} from "react";
 import {Theme} from "@material-ui/core";
-import {modulesPage} from "../pages/module/ModulesPage";
+import {modulesPage} from "../pages/ModulesPage";
 import {cssBaseLine} from "../../framework/widgets/CssBaseLine";
-import {applicationsPage} from '../pages/application/ApplicationsPage';
+import {applicationsPage} from '../pages/ApplicationsPage';
 import {platformContext} from "../../context/PlatformContext";
 import {actionOfPath} from "../../constants/SideBarActions";
-import {administrationPage} from "../pages/administration/AssembliesPage";
-import {networkAccessesPage} from "../pages/network/NetworkAccessesPage";
-import {configurationsPage} from "../pages/configuration/ConfigurationsPage";
+import {administrationPage} from "../pages/AssembliesPage";
+import {networkAccessesPage} from "../pages/NetworkAccessesPage";
+import {configurationsPage} from "../pages/ConfigurationsPage";
 import {
     ADMINISTRATION_CONTEXT,
     APPLICATIONS_CONTEXT,

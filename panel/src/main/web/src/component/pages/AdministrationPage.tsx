@@ -1,20 +1,20 @@
 import {useTheme} from "@material-ui/core";
-import {observe} from "../../../framework/pattern/Observable";
-import {Widget} from "../../../framework/widgets/Widget";
-import {label} from "../../../framework/dsl/managed/ManagedLabel";
-import {Configurable} from "../../../framework/pattern/Configurable";
-import {hooked} from "../../../framework/pattern/Hooked";
-import {styled} from "../../../framework/widgets/Styled";
-import {group} from "../../../framework/dsl/simple/SimpleGroup";
-import {horizontalGrid} from "../../../framework/dsl/managed/ManagedGrid";
-import {divider} from "../../../framework/dsl/simple/SimpleDivider";
-import AccountBox from "@material-ui/icons/AccountBox";
-import {proxy} from "../../../framework/widgets/Proxy";
 import React from "react";
-import {PlatformContext, PlatformContextual} from "../../../context/PlatformContext";
-import {tabs} from "../../../framework/dsl/managed/ManagedTabs";
-import {when} from "../../../framework/pattern/When";
-import {usersTab} from "../../embeddable/user/UsersTab";
+import {Configurable} from "../../framework/pattern/Configurable";
+import {PlatformContext, PlatformContextual} from "../../context/PlatformContext";
+import {Widget} from "../../framework/widgets/Widget";
+import {tabs} from "../../framework/dsl/managed/ManagedTabs";
+import {group} from "../../framework/dsl/simple/SimpleGroup";
+import {divider} from "../../framework/dsl/simple/SimpleDivider";
+import {when} from "../../framework/pattern/When";
+import {usersTab} from "../embeddable/user/UsersTab";
+import {hooked} from "../../framework/pattern/Hooked";
+import {horizontalGrid} from "../../framework/dsl/managed/ManagedGrid";
+import {label} from "../../framework/dsl/managed/ManagedLabel";
+import AccountBox from "@material-ui/icons/AccountBox";
+import { styled } from '../../framework/widgets/Styled';
+import {observe} from "../../framework/pattern/Observable";
+import {proxy} from "../../framework/widgets/Proxy";
 
 const useStyle = () => {
     const theme = useTheme();
