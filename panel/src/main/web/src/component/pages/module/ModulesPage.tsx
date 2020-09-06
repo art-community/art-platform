@@ -1,5 +1,5 @@
 import {useTheme} from "@material-ui/core";
-import {asynchronous, isNotEmptyArray} from "../../../framework/extensions/extensions";
+import {isNotEmptyArray} from "../../../framework/extensions/extensions";
 import {observe} from "../../../framework/pattern/Observable";
 import {Widget} from "../../../framework/widgets/Widget";
 import {label} from "../../../framework/dsl/managed/ManagedLabel";
@@ -95,7 +95,7 @@ export class ModulesPage extends Widget<ModulesPage, PlatformContextual, Configu
             this.#filtering = true;
             this.#tabs().notify();
         }
-        asynchronous(() => this.#moduleApi().getFilteredModules(request, modules => this.#refreshCards(modules, project, silent)));
+        this.#moduleApi().getFilteredModules(request, modules => this.#refreshCards(modules, project, silent));
     }
 
     #refreshCards = (modules: ModuleInformation[], project, silent: boolean) => this.lock(() => {

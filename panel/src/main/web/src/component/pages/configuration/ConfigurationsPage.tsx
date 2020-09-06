@@ -1,5 +1,5 @@
 import {useTheme} from "@material-ui/core";
-import {asynchronous, isEmptyArray, isNotEmptyArray} from "../../../framework/extensions/extensions";
+import {isEmptyArray, isNotEmptyArray} from "../../../framework/extensions/extensions";
 import {observe} from "../../../framework/pattern/Observable";
 import {Widget} from "../../../framework/widgets/Widget";
 import {label} from "../../../framework/dsl/managed/ManagedLabel";
@@ -89,9 +89,7 @@ export class ConfigurationsPage extends Widget<ConfigurationsPage, PlatformConte
             this.#filtering = true;
             this.#tabs().notify();
         }
-        asynchronous(() => this.#api()
-            .getFilteredPreparedConfigurations(request, configurations => this.#refreshEditors(configurations, project, silent))
-        );
+        this.#api().getFilteredPreparedConfigurations(request, configurations => this.#refreshEditors(configurations, project, silent));
     }
 
     #refreshEditors = (ids: PreparedConfigurationIdentifier[], project: Project, silent: boolean) => this.lock(() => {

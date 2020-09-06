@@ -134,9 +134,9 @@ export class AssemblyArtifactsConfigurator extends Widget<AssemblyArtifactsConfi
 
     constructor(properties: Properties) {
         super(properties, Configuration);
-        asynchronous(() => this.properties.initialConfigurations
+        this.properties.initialConfigurations
         ?.unique(configuration => configuration.name)
-        ?.forEach(this.#addExistedGroup));
+        ?.forEach(this.#addExistedGroup);
     }
 
     onChange = (action: DispatchWithoutAction) => {

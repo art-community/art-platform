@@ -1,5 +1,5 @@
 import {useTheme} from "@material-ui/core";
-import {asynchronous, isNotEmptyArray} from "../../../framework/extensions/extensions";
+import {isNotEmptyArray} from "../../../framework/extensions/extensions";
 import {buildLauncherDialog} from "../../embeddable/assembly/BuildLauncherDialog";
 import {observe} from "../../../framework/pattern/Observable";
 import {Widget} from "../../../framework/widgets/Widget";
@@ -80,7 +80,7 @@ export class AssembliesPage extends Widget<AssembliesPage, PlatformContextual, C
             this.#filtering = true;
             this.#tabs().notify();
         }
-        asynchronous(() => this.#assemblyApi().getFilteredAssemblies(request, assemblies => this.#refreshCards(assemblies, project, silent)));
+        this.#assemblyApi().getFilteredAssemblies(request, assemblies => this.#refreshCards(assemblies, project, silent));
     }
 
     #refreshCards = (assemblies: AssemblyInformation[], project: Project, silent: boolean) => this.lock(() => {

@@ -44,11 +44,11 @@ class ProjectsPage extends Widget<ProjectsPage, PlatformContextual, Configuratio
 
     #hasProjects = () => isNotEmptyArray(this.configuration.projects.value);
 
-    #createProjectCards = (projects: Project[]) => {
+    #createProjectCards = (projects: Project[]) => this.lock(() => {
         this.configuration.projects.value = projects;
         const resourcesStore = this.properties.context.resources.store();
         this.#cards.pushWidgets(projects.map(project => projectCard(project, projects, resourcesStore)));
-    }
+    });
 
     #stubLabel = proxy(
         <>

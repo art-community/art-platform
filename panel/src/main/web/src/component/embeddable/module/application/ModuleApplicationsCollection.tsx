@@ -10,7 +10,6 @@ import {event} from "../../../../framework/pattern/Event";
 import {Configurable} from "../../../../framework/pattern/Configurable";
 import {moduleApplicationAdditionDialog} from "./ModuleApplicationAdditionDialog";
 import {ModuleApplication} from "../../../../model/ModuleTypes";
-import {asynchronous} from "../../../../framework/extensions/extensions";
 import {ApplicationsStore} from "../../../../loader/ApplicationsLoader";
 import {label} from "../../../../framework/dsl/managed/ManagedLabel";
 import {divider} from "../../../../framework/dsl/simple/SimpleDivider";
@@ -95,7 +94,7 @@ export class ModuleApplicationsCollection extends Widget<ModuleApplicationsColle
 
     constructor(properties: Properties) {
         super(properties, Configuration);
-        asynchronous(() => this.properties.moduleApplications?.forEach(this.#addCard));
+        this.properties.moduleApplications?.forEach(this.#addCard);
     }
 
     draw = this.#collection.render;

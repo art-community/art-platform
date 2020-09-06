@@ -45,6 +45,7 @@ object PanelModule {
             migrate()
         }
         startServers()
+
     }
 
     private fun loadModules() {
