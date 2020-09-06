@@ -68,7 +68,7 @@ subprojects {
     }
 }
 
-project(":management-panel") {
+project(":panel") {
     (tasks.withType(KotlinCompile::class) + tasks.withType(JavaCompile::class))
             .forEach { task ->
                 task.dependsOn(":api:build",
