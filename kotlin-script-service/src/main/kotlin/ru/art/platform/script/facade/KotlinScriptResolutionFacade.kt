@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.resolve.lazy.*
 import ru.art.platform.script.environment.KotlinScriptEnvironmentManager.KOTLIN_SCRIPT_ENVIRONMENT
 
 class KotlinScriptResolutionFacade(private val provider: ComponentProvider?, override val moduleDescriptor: ModuleDescriptor) : ResolutionFacade {
-    override fun <T : Any> getFrontendService(element: PsiElement, serviceClass: Class<T>): T = throw UnsupportedOperationException()
+    override val project = KOTLIN_SCRIPT_ENVIRONMENT.project
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : Any> getFrontendService(serviceClass: Class<T>): T = when (provider) {
@@ -22,14 +22,17 @@ class KotlinScriptResolutionFacade(private val provider: ComponentProvider?, ove
     override fun <T : Any> getFrontendService(moduleDescriptor: ModuleDescriptor, serviceClass: Class<T>): T = throw UnsupportedOperationException()
 
     override fun <T : Any> getIdeService(serviceClass: Class<T>): T = throw UnsupportedOperationException()
+    override fun getResolverForProject(): ResolverForProject<out ModuleInfo> {
+        TODO("Not yet implemented")
+    }
 
     override fun <T : Any> tryGetFrontendService(element: PsiElement, serviceClass: Class<T>): T? = throw UnsupportedOperationException()
-
-    override val project = KOTLIN_SCRIPT_ENVIRONMENT.project
 
     override fun analyze(element: KtElement, bodyResolveMode: BodyResolveMode): BindingContext = throw UnsupportedOperationException()
 
     override fun analyzeWithAllCompilerChecks(elements: Collection<KtElement>): AnalysisResult = throw UnsupportedOperationException()
+
+    override fun <T : Any> getFrontendService(element: PsiElement, serviceClass: Class<T>): T = throw UnsupportedOperationException()
 
     override fun resolveToDescriptor(declaration: KtDeclaration, bodyResolveMode: BodyResolveMode): DeclarationDescriptor = throw UnsupportedOperationException()
 

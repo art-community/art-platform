@@ -2,12 +2,6 @@
 	path = kaniko
 	url = https://github.com/art-community/kaniko
 
-[submodule "management-panel/src/main/web/src/framework"]
-	path = management-panel/src/main/web/src/framework
+[submodule "panel/src/main/web/src/framework"]
+	path = panel/src/main/web/src/framework
 	url = https://github.com/art-community/art-react
-[submodule "/Users/Anton/Development/Projects/art/art-platform/management-panel/src/main/web/src/framework"]
-	path = /Users/Anton/Development/Projects/art/art-platform/management-panel/src/main/web/src/framework
-	url = https://github.com/art-community/art-react
-[submodule "/Users/Anton/Development/Projects/art/art-platform/kaniko"]
-	path = /Users/Anton/Development/Projects/art/art-platform/kaniko
-	url = https://github.com/art-community/kaniko

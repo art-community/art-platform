@@ -21,9 +21,7 @@ object KotlinScriptCompiler {
                     currentPsiFiles,
                     KOTLIN_SCRIPT_ENVIRONMENT.configuration)
                     .build()
-            compileCorrectFiles(generationState) { throwable, fileUrl ->
-                loggingModule().getLogger(KotlinScriptCompiler.javaClass).error("Compilation error at file $fileUrl", throwable)
-            }
+            compileCorrectFiles(generationState)
             val files = mutableMapOf<String, ByteArray>()
             for (file in generationState.factory.asList()) {
                 files[file.relativePath] = file.asByteArray()
