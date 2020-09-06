@@ -5,7 +5,7 @@ export type SynchronizedAction = (synchronizer: Synchronizer) => any;
 
 export class Synchronizer {
     #actions: SynchronizedAction[] = [];
-    #managed = false
+    #ordered = false
     #counter = 0;
     #done = false
     #onStart = doNothing;
@@ -15,8 +15,8 @@ export class Synchronizer {
         return this.#done;
     }
 
-    managed = () => {
-        this.#managed = true;
+    ordered = () => {
+        this.#ordered = true;
         return this;
     }
 
@@ -26,7 +26,7 @@ export class Synchronizer {
             return;
         }
         this.#onStart();
-        if (!this.#managed) {
+        if (!this.#ordered) {
             this.#actions.forEach(action => action(this));
             return;
         }
@@ -47,7 +47,7 @@ export class Synchronizer {
             this.#onComplete()
             return this
         }
-        if (this.#managed) {
+        if (this.#ordered) {
             const action = this.#actions.shift();
             if (action) {
                 action(this)
