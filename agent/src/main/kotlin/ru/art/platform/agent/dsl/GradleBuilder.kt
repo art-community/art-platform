@@ -232,7 +232,7 @@ class GradleBuilder(private val projectPath: Path) {
 
 class GradleBuildResult(private val projectPath: Path) {
     fun modules(): Map<String, Path> = findGradleModules(projectPath)
-            .map { module -> return@map module.name to module.path }
+            .map { module -> module.name to module.path }
             .toMap()
 
     fun artifacts(version: String): List<GradleArtifact> = modules()
