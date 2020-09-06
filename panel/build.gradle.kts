@@ -38,7 +38,7 @@ art {
         buildWebCommand = if (os.current().isWindows) listOf("cmd", "/c", "yarn", "run", "production") else listOf("yarn", "run", "production")
         prepareWebCommand = if (os.current().isWindows) listOf("cmd", "/c", "yarn") else listOf("yarn")
     }
-    mainClass("ru.art.platform.module.PanelModule")
+    mainClass("ru.art.platform.panel.module.PanelModule")
     spockFramework()
 }
 
