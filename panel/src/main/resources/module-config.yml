@@ -1,7 +1,7 @@
 platform:
   secret: "platform"
   agent:
-    image: "platforma/agent:development"
+    image: "registry.apps.open-shift.art-platform.io/platform/agent:development"
     timeoutMinutes: 5
   openShift:
     platformProjectName: "platform"
