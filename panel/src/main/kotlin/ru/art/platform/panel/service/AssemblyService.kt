@@ -95,7 +95,7 @@ object AssemblyService {
     fun getLatestAssembledArtifacts(projectId: Long): Set<AssembledArtifact> =
             getProjectAssemblies(projectId)
                     .filter { assembly -> assembly.state == ASSEMBLY_DONE_STATE }
-                    .maxByOrNull { assembly -> assembly.endTimeStamp }!!
+                    .maxBy { assembly -> assembly.endTimeStamp }!!
                     .artifacts
 
     fun deleteProjectAssemblies(projectId: Long) {
