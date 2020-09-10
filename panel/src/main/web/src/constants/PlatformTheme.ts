@@ -1,4 +1,4 @@
-import {lightGreen, orange, purple, teal} from "@material-ui/core/colors";
+import {blue, indigo, lightGreen, orange, purple, teal} from "@material-ui/core/colors";
 import {createMuiTheme, Theme} from "@material-ui/core";
 
 export enum PlatformTheme {
@@ -6,8 +6,8 @@ export enum PlatformTheme {
     LIGHT = 'light'
 }
 
-export const PRIMARY_MAIN_COLOR_LIGHT = purple['700'];
-export const SECONDARY_MAIN_COLOR_LIGHT = orange["800"];
+export const PRIMARY_MAIN_COLOR_LIGHT = indigo['600'];
+export const SECONDARY_MAIN_COLOR_LIGHT = blue["900"];
 
 export const PRIMARY_MAIN_COLOR_DARK = teal["200"];
 export const SECONDARY_MAIN_COLOR_DARK = lightGreen["200"];
