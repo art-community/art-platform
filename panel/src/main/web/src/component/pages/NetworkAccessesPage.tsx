@@ -11,7 +11,6 @@ import {text} from "../../framework/dsl/managed/ManagedTextField";
 import {group} from "../../framework/dsl/simple/SimpleGroup";
 import {divider} from "../../framework/dsl/simple/SimpleDivider";
 import {hooked} from "../../framework/pattern/Hooked";
-import {styled} from "../../framework/widgets/Styled";
 import {ResourceIdentifier} from "../../model/ResourceTypes";
 import {useNotifications} from "../../framework/hooks/Hooks";
 import {horizontalGrid, verticalGrid} from "../../framework/dsl/managed/ManagedGrid";
@@ -166,14 +165,14 @@ class NetworkAccessesPage extends Widget<NetworkAccessesPage, PlatformContextual
     .persist(openShiftPodConfigurator)
 
     #page = hooked(useStyle)
-    .widget(style => styled(group()
+    .widget(style => group()
         .widget(horizontalGrid({spacing: 1, alignItems: "center"})
             .pushWidget(proxy(<Router fontSize={"large"} color={"secondary"}/>))
             .pushWidget(label({variant: "h3", color: "primary", text: "Проверка доступов"}))
         )
-        .widget(styled(this.#form, style.form)),
-        style.page
-    ))
+        .widget(this.#form.styled(style.form))
+        .styled(style.page)
+    )
 
     draw = this.#page.render;
 }
