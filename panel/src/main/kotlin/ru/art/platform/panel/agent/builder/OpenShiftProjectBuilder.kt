@@ -18,6 +18,8 @@ import ru.art.rsocket.model.RsocketCommunicationTargetConfiguration
 import ru.art.rsocket.model.RsocketCommunicationTargetConfiguration.rsocketCommunicationTarget
 
 class OpenShiftProjectBuilder(private val resource: OpenShiftResource, private val assembly: Assembly, private val project: Project) : ProjectBuilder {
+    lateinit var test: Int
+
     override fun startAgent(): RsocketCommunicationTargetConfiguration = rsocketCommunicationTarget()
             .host(extractHostName(resource.apiUrl))
             .tcpPort(startOpenShiftAgent(resource, "$PLATFORM_PROJECT_BUILDER-${assembly.id}") {

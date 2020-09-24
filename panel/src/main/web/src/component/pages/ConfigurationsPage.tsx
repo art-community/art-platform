@@ -5,7 +5,6 @@ import {Widget} from "../../framework/widgets/Widget";
 import {label} from "../../framework/dsl/managed/ManagedLabel";
 import {Configurable} from "../../framework/pattern/Configurable";
 import {hooked} from "../../framework/pattern/Hooked";
-import {styled} from "../../framework/widgets/Styled";
 import {group} from "../../framework/dsl/simple/SimpleGroup";
 import {conditional} from "../../framework/pattern/Conditional";
 import {magicLoader} from "../embeddable/common/PlatformLoaders";
@@ -60,16 +59,16 @@ export class ConfigurationsPage extends Widget<ConfigurationsPage, PlatformConte
         const project = this.properties.context.projects.getInitialized[this.#projectTabs().selected()];
         this.#filter.lock(() => {
             this.#filter
-            .setAvailableNames(ids
-            .filter(configuration => configuration.projectId == project.id)
-            .map(configuration => configuration.name)
-            .unique())
+                .setAvailableNames(ids
+                    .filter(configuration => configuration.projectId == project.id)
+                    .map(configuration => configuration.name)
+                    .unique())
 
             this.#filter
-            .setAvailableProfiles(ids
-            .filter(configuration => configuration.projectId == project.id)
-            .map(configuration => configuration.profile)
-            .unique())
+                .setAvailableProfiles(ids
+                    .filter(configuration => configuration.projectId == project.id)
+                    .map(configuration => configuration.profile)
+                    .unique())
         })
         this.#filterConfigurations(false)
     })
@@ -101,7 +100,7 @@ export class ConfigurationsPage extends Widget<ConfigurationsPage, PlatformConte
                     id,
                     modules: this.properties.context.modules
                 })
-                .onDelete(this.#updateFilter))
+                    .onDelete(this.#updateFilter))
             }
         })
 
@@ -133,14 +132,14 @@ export class ConfigurationsPage extends Widget<ConfigurationsPage, PlatformConte
         filterNames: true,
         filterProfiles: true
     })
-    .onProfilesFiltered(() => this.#filterConfigurations(false))
-    .onNamesFiltered(() => this.#filterConfigurations(false));
+        .onProfilesFiltered(() => this.#filterConfigurations(false))
+        .onNamesFiltered(() => this.#filterConfigurations(false));
 
     #projectTabs = lazy(() => tabs({
             variant: "scrollable",
             labels: this.properties.context.projects.getInitialized.map(project => project.name)
         })
-        .onSelect(this.#updateFilter)
+            .onSelect(this.#updateFilter)
     );
 
     #button = button({
@@ -148,50 +147,51 @@ export class ConfigurationsPage extends Widget<ConfigurationsPage, PlatformConte
         variant: "contained",
         color: "primary"
     })
-    .onClick(() => this.#additionDialog.spawn());
+        .onClick(() => this.#additionDialog.spawn());
 
     #tabs = lazy(() => group()
-    .widget(hooked(useStyle).cache(style => styled(this.#button, style.button)))
-    .widget(hooked(useStyle).widget(style => styled(group().widget(this.#projectTabs())
-        .widget(divider())
-        .widget(this.#filter)
-        .widget(hooked(useStyle)
-            .widget(style => styled(conditional(() => !this.#filtering)
-            .persist(() => horizontalGrid({spacing: 1}).breakpoints({xs: true})
-                .pushWidgets(this.#profiles()
-                .filter(profile => isNotEmptyArray(this.configuration.ids.value.filter(id => id.profile == profile)))
-                .map(profile => verticalGrid({spacing: 1})
-                    .pushWidget(label({
-                        text: `Профиль ${profile}`,
-                        variant: "h5",
-                        color: "primary"
-                    }))
-                    .pushWidget(divider(1, 1))
-                    .pushWidgets(this.configuration.ids.value
-                        .filter(id => id.profile == profile).map(id => this.#editors.getWidgetByKey(id.id))
-                    )
-                ))
+        .widget(hooked(useStyle).cache(style => this.#button.styled(style.button)))
+        .widget(hooked(useStyle).widget(style => group().widget(this.#projectTabs())
+            .widget(divider())
+            .widget(this.#filter)
+            .widget(hooked(useStyle)
+                .widget(style => conditional(() => !this.#filtering)
+                    .persist(() => horizontalGrid({spacing: 1}).breakpoints({xs: true})
+                        .pushWidgets(this.#profiles()
+                            .filter(profile => isNotEmptyArray(this.configuration.ids.value.filter(id => id.profile == profile)))
+                            .map(profile => verticalGrid({spacing: 1})
+                                .pushWidget(label({
+                                    text: `Профиль ${profile}`,
+                                    variant: "h5",
+                                    color: "primary"
+                                }))
+                                .pushWidget(divider(1, 1))
+                                .pushWidgets(this.configuration.ids.value
+                                    .filter(id => id.profile == profile)
+                                    .map(id => this.#editors.getWidgetByKey(id.id))
+                                )
+                            )))
+                    .else(this.#loader)
+                    .styled(style.editors))
             )
-            .else(this.#loader), style.editors))
-        ), style.configurations))
-    ));
+            .styled(style.configurations))
+        ));
 
     #content = conditional(this.#hasProjects).persist(this.#tabs).else(this.#noProjectsLabel);
 
-    #page = hooked(useStyle).widget(style => styled(group()
+    #page = hooked(useStyle).widget(style => group()
         .widget(horizontalGrid({spacing: 1, alignItems: "center"})
             .pushWidget(proxy(<TuneOutlined fontSize={"large"} color={"secondary"}/>))
             .pushWidget(label({variant: "h3", color: "primary", text: "Конфигурации"}))
         )
-        .widget(this.#content), style.page)
-    );
+        .widget(this.#content)
+        .styled(style.page));
 
     #additionDialog = this.add(
         optional(() => {
             const project = this.properties.context.projects.getInitialized[this.#projectTabs().selected()];
             return preparedConfigurationAdditionDialog(this.configuration.ids.value, project)
-        })
-        .onDestroy(this.#updateFilter)
+        }).onDestroy(this.#updateFilter)
     );
 
     constructor(properties: PlatformContextual) {

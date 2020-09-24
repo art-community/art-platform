@@ -104,6 +104,5 @@ object AssemblyService {
             deleteAssembly(assembly.id)
         }
     }
-
     fun deleteAssembly(id: Long) = AssemblyRepository.deleteAssembly(id).deleted()
 }
