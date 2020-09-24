@@ -47,7 +47,7 @@ export class ManagedResourceProperty extends Widget<ManagedResourceProperty, Pro
             fullWidth: true,
             value: defaultAttribute.value,
             disabled: true,
-            password: Boolean(defaultAttribute?.isPassword.bind(defaultAttribute))
+            password: Boolean(defaultAttribute?.isPassword)
         });
 
         this.#attributeSelector = resourceAttributeSelector({
