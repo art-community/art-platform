@@ -53,7 +53,7 @@ dependencies {
             .exclude("com.fasterxml.jackson.core")
             .exclude("com.google.guava")
             .exclude("org.slf4j")
-    embedded("com.google.crypto.tink", "tink", "+")
+    embedded("com.google.crypto.tink", "tink", "1.4.0")
             .exclude("com.fasterxml.jackson.dataformat")
             .exclude("com.fasterxml.jackson.core")
             .exclude("com.google.guava")
