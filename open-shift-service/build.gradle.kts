@@ -23,9 +23,9 @@ art {
 }
 
 dependencies {
-    provided(project(":api"))
-    provided(project(":common"))
-    embedded("com.openshift", "openshift-restclient-java", "9+")
+    embedded(project(":api"))
+    embedded(project(":common"))
+    embedded("com.openshift", "openshift-restclient-java", "8.1.2.Final")
             .exclude("commons-logging")
             .exclude("commons-codec")
             .exclude("io.netty")

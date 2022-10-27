@@ -24,7 +24,7 @@ plugins {
 }
 
 tasks.withType(Wrapper::class.java) {
-    gradleVersion = "6.0"
+    gradleVersion = "7.2"
 }
 
 val bintrayUser: String? by project
@@ -42,6 +42,7 @@ subprojects {
     repositories {
         jcenter()
         mavenCentral()
+
     }
 
     apply(plugin = "io.github.art.project")
