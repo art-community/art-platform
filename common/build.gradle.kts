@@ -1,0 +1,5 @@
+art {
+    providedModules {
+        kit()
+    }
+}

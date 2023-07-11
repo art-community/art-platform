@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:10002 $@ -Dmodule.config.file=configs/module-config.yml -Dlog4j.configurationFile=configs/logging-config.yml -server -Xms1g -Xmx1g -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=1g -XX:SurvivorRatio=8 -XX:TargetSurvivorRatio=90 -XX:MinHeapFreeRatio=40 -XX:MaxHeapFreeRatio=90 -XX:+UnlockExperimentalVMOptions -XX:+UseShenandoahGC -XX:MaxGCPauseMillis=10 -XX:InitiatingHeapOccupancyPercent=30 -XX:+UseTLAB -XX:CompileThreshold=100 -XX:ThreadStackSize=4096 -XX:MaxTenuringThreshold=5 -XX:ReservedCodeCacheSize=512m -XX:+UseStringDeduplication -XX:StringDeduplicationAgeThreshold=3 -XX:MaxInlineSize=200 -XX:MaxTrivialSize=12 -jar management-panel.jar
